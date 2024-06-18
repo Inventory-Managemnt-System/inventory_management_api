@@ -10,6 +10,7 @@ class Item extends Model
     use HasFactory;
 
     protected $fillable = [
+        "unique_id",
         "name",
         "description",
         "brand",

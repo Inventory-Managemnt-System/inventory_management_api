@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DiscrepancyController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ItemRequestController;
 use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -48,4 +51,22 @@ Route::prefix("user")->middleware(["auth:sanctum"])->controller(UserController::
     Route::post("/", "store");
     Route::patch("{id}", "update");
     Route::patch("update-status/{id}", "updateStatus");
+});
+
+Route::prefix("discrepancy")->middleware(["auth:sanctum"])->controller(DiscrepancyController::class)->group(function () {
+    Route::get("/", "index");
+    Route::get("{id}", "show");
+    Route::post("/", "store");
+});
+
+Route::prefix("tracking")->middleware(["auth:sanctum"])->controller(TrackingController::class)->group(function () {
+    Route::get("/", "index");
+    Route::get("{id}", "show");
+    Route::post("/", "store");
+});
+
+Route::prefix("item-request")->middleware(["auth:sanctum"])->controller(ItemRequestController::class)->group(function () {
+    Route::get("/", "index");
+    Route::get("{id}", "show");
+    Route::post("/", "store");
 });
