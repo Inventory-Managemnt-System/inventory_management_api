@@ -22,7 +22,9 @@ class DashboardController extends Controller
                 "recent_activities" => []
             ];
         } else if ($user->role->name == 'qa') {
-            $dashboard_info = [];
+            $dashboard_info = [
+
+            ];
         } else if ($user->role->name == 'warehouse-staff') {
             $dashboard_info = [
                 "total_inventory_items" => 0,
@@ -30,9 +32,16 @@ class DashboardController extends Controller
                 "scanned_items" => 0,
                 "reported_items" => 0,
                 "stock_level_summary" => [],
+                "recent_activities" => []
             ];
         } else if ($user->role->name == 'head-teacher') {
-            $dashboard_info = [];
+            $dashboard_info = [
+                "total_inventory_items" => 0,
+                "low_stock_alerts" => 0,
+                "stock_level_summary" => [],
+                "material_usage_chart" => [],
+                "material_usage_graph" => [],
+            ];
         }
 
         return response()->json(["dashboard_info" => $dashboard_info], Response::HTTP_OK);
