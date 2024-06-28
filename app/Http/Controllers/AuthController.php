@@ -47,9 +47,9 @@ class AuthController extends Controller
 
         // find with oracle id or email
         if($request->has("oracle_id")){
-            $user = User::where(["oracle_id" => $request["oracle_id"]])->first();
+            $user = User::where(["oracle_id" => $request["oracle_id"]])->with(["role"])->first();
         } else {
-            $user = User::where(["email" => $request['email']])->first();
+            $user = User::where(["email" => $request['email']])->with(["role"])->first();
         }
         if (!$user) return response()->json(["message" => "User not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
         if (!Hash::check($request['password'], $user->password)) return response()->json(["message" => "Wrong password"], Response::HTTP_UNPROCESSABLE_ENTITY);
