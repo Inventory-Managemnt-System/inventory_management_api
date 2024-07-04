@@ -34,9 +34,12 @@ Route::prefix("auth")->controller(AuthController::class)->group(function () {
 });
 
 Route::prefix("item")->middleware(["auth:sanctum"])->controller(ItemController::class)->group(function () {
+    Route::post("scan", "scan");
+    Route::get("inventory-report", "inventory_report");
     Route::get("/", "index");
     Route::get("{id}", "show");
     Route::post("/", "store");
+    Route::patch("{id}", "update");
 });
 
 Route::prefix("school")->middleware(["auth:sanctum"])->controller(SchoolController::class)->group(function () {

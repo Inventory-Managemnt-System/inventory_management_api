@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Services\ReportService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
 class ItemController extends Controller
@@ -26,6 +28,7 @@ class ItemController extends Controller
     public function store(Request $request): JsonResponse
     {
         $request = $this->validate($request, [
+            "barcode_id" => "required|string",
             "name" => "required|string",
             "description" => "required|string",
             "brand" => "required|string",
@@ -41,6 +44,7 @@ class ItemController extends Controller
         // create item
         $item = new Item();
         $item->unique_id = $this->UniqueID();
+        $item->barcode_id = $request['barcode_id'];
         $item->name = $request["name"];
         $item->description = $request["description"];
         $item->brand = $request["brand"];
@@ -56,9 +60,28 @@ class ItemController extends Controller
         return response()->json(["item" => $item], Response::HTTP_CREATED);
     }
 
-    public function update()
+    public function update(Request $request, int $id)
     {
+        $request = $this->validate($request, [
+            "barcode_id" => "required|string",
+            "name" => "required|string",
+            "description" => "required|string",
+            "brand" => "required|string",
+            "category" => "required|string",
+            "value" => "required|string",
+            "image" => "required|string",
+            "unit_cost" => "required|numeric",
+            "quantity" => "required|numeric",
+            "reorder_point" => "required|numeric",
+            "supplier" => "required|string",
+        ]);
 
+        // find item
+        $item = Item::where(['id' => $id])->first();
+        if(!$item) return response()->json(["message" => "Item not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
+
+        $item->update($request);
+        return response()->json(["item" => $item], Response::HTTP_OK);
     }
 
     public function delete()
@@ -90,4 +113,32 @@ class ItemController extends Controller
         if (!$item) return response()->json(["message" => "Item not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
         return response()->json(["item" => $item], Response::HTTP_OK);
     }
+
+    public function scan(Request $request): JsonResponse
+    {
+        $request = $this->validate($request, [
+            "barcode_id" => "required|string",
+        ]);
+
+        $item = Item::where(['barcode_id' => $request['barcode_id']])->first();
+        if(!$item) return response()->json(["message" => "Item not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
+        return response()->json(["item" => $item], Response::HTTP_OK);
+    }
+
+    public function inventory_report(Request $request): \Symfony\Component\HttpFoundation\StreamedResponse
+    {
+        $items = Item::filterItems($request->all());
+        if($request->get('format') == 'pdf') {
+            $pdfContent = ReportService::GeneratePDF($items);
+            return response()->streamDownload(
+                fn () => print($pdfContent),
+                'report'
+            );
+        } else if ($request->get('format') == 'docx') {
+            $filePath = ReportService::GenerateDOCX($items);
+            return Storage::download($filePath);
+        }
+    }
+
+
 }

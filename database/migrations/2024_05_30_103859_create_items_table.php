@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->string("unique_id")->unique();
+            $table->string("barcode_id")->unique();
             $table->string("name");
             $table->text("description");
             $table->string("brand");
