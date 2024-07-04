@@ -20,6 +20,7 @@ class School extends Model
         "address",
         "city",
         "lga",
-        "postal_code"
+        "postal_code",
+        "school_image",
     ];
 }

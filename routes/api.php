@@ -78,6 +78,7 @@ Route::prefix("discrepancy")->middleware(["auth:sanctum"])->controller(Discrepan
     Route::get("/", "index");
     Route::get("{id}", "show");
     Route::post("/", "store");
+    Route::delete("{id}", "destroy");
 });
 
 Route::prefix("tracking")->middleware(["auth:sanctum"])->controller(TrackingController::class)->group(function () {

@@ -42,4 +42,12 @@ class DiscrepancyController extends Controller
         $discrepancy->save();
         return response()->json(["discrepancy" => $discrepancy], Response::HTTP_CREATED);
     }
+
+    public function destroy(int $id): JsonResponse
+    {
+        $discrepancy = Discrepancy::where(['id' => $id])->first();
+        if(!$discrepancy)  return response()->json(["message" => "Discrepancy not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
+        $discrepancy->delete();
+        return response()->json(["message" => "Item deleted successfully"], Response::HTTP_OK);
+    }
 }

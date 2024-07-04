@@ -35,6 +35,7 @@ class SchoolController extends Controller
             "city" => "required|string",
             "lga" => "required|string",
             "postal_code" => "required|string",
+            "school_image" => "nullable|string",
         ]);
 
         // create school record
@@ -55,6 +56,7 @@ class SchoolController extends Controller
             "city" => "required|string",
             "lga" => "required|string",
             "postal_code" => "required|string",
+            "school_image" => "nullable|string",
         ]);
 
         $school = School::where(["id" => $id])->firstOrFail();
