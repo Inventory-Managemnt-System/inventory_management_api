@@ -63,6 +63,7 @@ Route::prefix("settings")->middleware(["auth:sanctum"])->controller(UserSettings
 Route::prefix("notification")->middleware(["auth:sanctum"])->controller(NotificationController::class)->group(function () {
     Route::get("/", "get_notifications");
     Route::get("{id}", "get_notification");
+    Route::post("/", "create_notification");
 });
 
 Route::prefix("user")->middleware(["auth:sanctum"])->controller(UserController::class)->group(function () {
@@ -78,6 +79,7 @@ Route::prefix("discrepancy")->middleware(["auth:sanctum"])->controller(Discrepan
     Route::get("/", "index");
     Route::get("{id}", "show");
     Route::post("/", "store");
+    Route::delete("delete-multiple", "deleteMultiple");
     Route::delete("{id}", "destroy");
 });
 
