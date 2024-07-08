@@ -31,7 +31,7 @@ class AuthController extends Controller
         $new_user->role_id = $role->id;
         $new_user->email = $validatedData['email'];
         $new_user->password = Hash::make($validatedData['password']);
-        $new_user->oracle_id = "0933j42";
+        $new_user->oracle_id = $this->GenerateOracleID(7);
         $new_user->save();
 
         return response()->json(["message" => "User created successfully"], Response::HTTP_CREATED);
@@ -59,5 +59,33 @@ class AuthController extends Controller
         return response()->json(["token" => $token, "user" => $user], Response::HTTP_OK);
     }
 
+    public function GenerateOracleID(int $length = 7):string
+    {
+        $oracle_id = $this->RandomString($length);
+        $oracleIDExists = User::where("oracle_id", $oracle_id)->first();
+        if ($oracleIDExists) {
+            $this->RandomString($length);
+        } else {
+            return $oracle_id;
+        }
+    }
+
+    public function RandomString(int $length): string
+    {
+        $pool = '0123456789';
+        $nonZeroPool = '123456789';
+
+        // Generate the first character from non-zero pool
+        $firstChar = $nonZeroPool[random_int(0, strlen($nonZeroPool) - 1)];
+
+        // Generate the remaining characters from the full pool
+        $remainingChars = '';
+        for ($i = 0; $i < $length - 1; $i++) {
+            $remainingChars .= $pool[random_int(0, strlen($pool) - 1)];
+        }
+
+        // Combine the first character with the remaining characters
+        return $firstChar . $remainingChars;
+    }
 
 }

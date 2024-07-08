@@ -43,7 +43,7 @@ class ItemController extends Controller
        
         $imageName = time() . $file->getClientOriginalName();
 $filePath = $file->move(public_path('uploads'), $imageName);
-$imagePath = "http://localhost:8000/uploads/" . $imageName;
+$imagePath = "https://f3a5-102-91-93-193.ngrok-free.app/uploads/" . $imageName;
         // create item
         $item = new Item();
         $item->unique_id = $this->UniqueID();
