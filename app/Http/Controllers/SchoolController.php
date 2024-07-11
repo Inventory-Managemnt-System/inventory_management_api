@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AllSchools;
 use App\Models\School;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -11,8 +12,9 @@ class SchoolController extends Controller
 {
     public function index(): JsonResponse
     {
-        $schools = School::latest()->get();
-        return response()->json(["schools" => $schools, "message" => "Fetched schools"], Response::HTTP_OK);
+        $schools = AllSchools::all();
+        $count = AllSchools::count();
+        return response()->json(["schools" => $schools,'count'=>$count, "message" => "Fetched schools"], Response::HTTP_OK);
     }
 
     public function show(int $id): JsonResponse

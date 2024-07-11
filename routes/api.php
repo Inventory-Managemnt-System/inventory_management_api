@@ -42,7 +42,7 @@ Route::prefix("item")->middleware(["auth:sanctum"])->controller(ItemController::
     Route::patch("{id}", "update");
 });
 
-Route::prefix("school")->middleware(["auth:sanctum"])->controller(SchoolController::class)->group(function () {
+Route::prefix("school")->middleware(['auth:sanctum'])->controller(SchoolController::class)->group(function () {
     Route::get("/", "index");
     Route::get("{id}", "show");
     Route::post("/", "store");
@@ -64,6 +64,7 @@ Route::prefix("notification")->middleware(["auth:sanctum"])->controller(Notifica
     Route::get("/", "get_notifications");
     Route::get("{id}", "get_notification");
     Route::post("/", "create_notification");
+    Route::post('/sendnotification', 'sendNotification');
 });
 
 Route::prefix("user")->middleware(["auth:sanctum"])->controller(UserController::class)->group(function () {
@@ -72,6 +73,7 @@ Route::prefix("user")->middleware(["auth:sanctum"])->controller(UserController::
     Route::get("{id}", "show");
     Route::post("/", "store");
     Route::patch("{id}", "update");
+    Route::post('/upload-users', 'uploadUsers');
     Route::patch("update-status/{id}", "updateStatus");
 });
 

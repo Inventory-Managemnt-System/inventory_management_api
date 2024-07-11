@@ -18,7 +18,8 @@ class AuthController extends Controller
         $validatedData = $request->validate([
             "role" => "required",
             "email" => "required|email|unique:users",
-            "password" => "required"
+            "password" => "required",
+            'phone_number'=>'required'
         ]);
 
         $user = User::where(["email" => $validatedData['email']])->first();
@@ -32,6 +33,7 @@ class AuthController extends Controller
         $new_user->email = $validatedData['email'];
         $new_user->password = Hash::make($validatedData['password']);
         $new_user->oracle_id = $this->GenerateOracleID(7);
+        $new_user->phone_number = $validatedData['phone_number'];
         $new_user->save();
 
         return response()->json(["message" => "User created successfully"], Response::HTTP_CREATED);

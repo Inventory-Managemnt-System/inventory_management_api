@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -108,4 +109,49 @@ class UserController extends Controller
         $user->save();
         return response()->json(["message" => "User status updated", "user" => $user], Response::HTTP_OK);
     }
+
+public function uploadUsers(Request $request){
+    $validator = Validator::make($request->all(), [
+        'file' => 'required|mimes:csv,txt',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json(['error' => $validator->errors()], 400);
+    }
+
+    $file = $request->file('file');
+    $filePath = $file->getRealPath();
+    $fileHandle = fopen($filePath, 'r');
+
+    $header = fgetcsv($fileHandle, 0, ',');
+
+    while (($row = fgetcsv($fileHandle, 0, ',')) !== FALSE) {
+        $data = array_combine($header, $row);
+
+        // Insert user data into the database
+        User::create([
+            'id' => $data['id'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']),
+            'role_id'=>$data['role_id'],
+            'name'=>$data['name'],
+            'phone_number'=>$data['phone_number'],
+            'level'=>$data['level'],
+            'department'=>$data['department'],
+            'username'=>$data['username'],
+            'oracle_id'=>$data['oracle_id'],
+            'status'=>$data['status'],
+            'message_count'=>$data['message_count'],
+
+            'email_verified_at'=>$data['email_verified_at'],
+            'created_at'=>$data['created_at'],
+            'updated_at'=>$data['updated_at'],
+
+        ]);
+    }
+
+    fclose($fileHandle);
+
+    return response()->json(['success' => 'File uploaded and data inserted successfully']);
+}
 }
