@@ -1,3 +1,4 @@
+
 #!/usr/bin/env php
 <?php
 
@@ -5,7 +6,7 @@ define('LARAVEL_START', microtime(true));
 
 /*
 |--------------------------------------------------------------------------
-| Register The Auto Loader
+| Register The Auto Loader try this
 |--------------------------------------------------------------------------
 |
 | Composer provides a convenient, automatically generated class loader
@@ -51,5 +52,3 @@ $status = $kernel->handle(
 $kernel->terminate($input, $status);
 
 exit($status);
-
-#!/usr/bin/env php
