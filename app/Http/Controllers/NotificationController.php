@@ -137,8 +137,8 @@ class NotificationController extends Controller
                     $query->where('name', 'Admin');
                 })->pluck('email');
                 
-                auth()->user()->message_count++;
-                auth()->user()->save();
+                // auth()->user()->message_count++;
+                // auth()->user()->save();
                 
     
                 foreach ($userEmails as $email) {
@@ -152,7 +152,8 @@ class NotificationController extends Controller
                 }
                
     
-                return response()->json(['message'=>auth()->user()->message_count]);
+                // return response()->json(['message'=>auth()->user()->message_count]);
+                return response()->json(['message'=>'Email sent successfully']);
             } catch (\Exception $e) {
                 // Handle errors
                
