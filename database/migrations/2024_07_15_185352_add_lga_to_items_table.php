@@ -12,7 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('items', function (Blueprint $table) {
-            $table->string('barcode_id');
+           
+          
+            $table->foreign('LGA')
+                  ->references('LGA')->on('all_schools')
+                  ->onDelete('cascade');
         });
     }
 

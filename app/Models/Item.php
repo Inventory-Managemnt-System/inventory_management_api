@@ -22,4 +22,8 @@ class Item extends Model
         "reorder_point",
         "supplier",
     ];
+    public function school()
+    {
+        return $this->belongsTo(AllSchools::class, 'LGA', 'LGA');
+    }
 }

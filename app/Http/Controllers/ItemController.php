@@ -128,17 +128,34 @@ class ItemController extends Controller
 
     public function inventory_report(Request $request)
     {
-        $items = Item::all();
-        
-        if($request->get('format') == 'pdf') {
+        if($request->get('lga') == 'AKOKO EDO'){
             
-            $pdfContent = ReportService::GeneratePDF($items);
-            return response()->streamDownload(
-                fn () => print($pdfContent),
-                'report'
-            );
-        } 
-        return response($items, 200);
+            $edoItems = Item::where('name', 'Pencil')->orWhere('name', 'Eraser')->orWhere('name', 'Sharpner')->get();
+            return response($edoItems, 200);
+        }
+        else if($request->get('lga') =='EGOR'){
+            $egorItems = Item::where('name', 'Mathematics Textbook - Grade 2')->orWhere('name', 'Mathematics Textbook – Grade 1')->get();
+            return response($egorItems, 200);
+        }
+        else if($request->get('lga') =='ESAN CENTRAL'){
+            $esanItems = Item::where('name', 'ChalkBoard')->orWhere('name', 'Laptops')->get();
+            return response($esanItems, 200);
+        }
+        else{
+            $items = Item::all();
+            return response($items, 200);
+        }
+      
+        
+        // if($request->get('format') == 'pdf') {
+            
+        //     $pdfContent = ReportService::GeneratePDF($items);
+        //     return response()->streamDownload(
+        //         fn () => print($pdfContent),
+        //         'report'
+        //     );
+        // } 
+      
     }
 
   
