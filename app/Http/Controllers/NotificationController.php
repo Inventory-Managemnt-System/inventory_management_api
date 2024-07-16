@@ -136,6 +136,10 @@ class NotificationController extends Controller
                 $userEmails = User::whereHas('role', function ($query) {
                     $query->where('name', 'Admin');
                 })->pluck('email');
+
+                $users = User::whereHas('role', function($query){
+                    $query->where('name', 'Admin');
+                })->get();
                 
                 // auth()->user()->message_count++;
                 // auth()->user()->save();
@@ -147,6 +151,10 @@ class NotificationController extends Controller
                         $msg->to($email);
                         $msg->subject('New Notification');
                     });
+                    foreach($users as $user){
+                        $user->message_count++;
+                        $user->save();
+                    }
                    
                     
                 }

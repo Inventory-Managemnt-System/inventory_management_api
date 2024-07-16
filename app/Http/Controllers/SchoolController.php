@@ -13,6 +13,7 @@ class SchoolController extends Controller
     public function index(): JsonResponse
     {
         $schools = AllSchools::all();
+
         $count = AllSchools::count();
         return response()->json(["schools" => $schools,'count'=>$count, "message" => "Fetched schools"], Response::HTTP_OK);
     }

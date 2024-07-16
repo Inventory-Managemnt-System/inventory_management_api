@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('items', function (Blueprint $table) {
-           
-          
-            $table->foreign('LGA')
-                  ->references('LGA')->on('all_schools')
-                  ->onDelete('cascade');
+        Schema::table('all_schools', function (Blueprint $table) {
+            $table->dropIndex(['LGA']);
         });
     }
 
@@ -25,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('items', function (Blueprint $table) {
+        Schema::table('all_schools', function (Blueprint $table) {
             //
         });
     }
