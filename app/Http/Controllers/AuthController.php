@@ -71,6 +71,24 @@ class AuthController extends Controller
             return $oracle_id;
         }
     }
+    public function forgotPassword(Request $request){
+        $validated = $request->validate(['email'=>'required|email']);
+        $user = User::where(["email" => $validated['email']])->first();
+        if (!$user) return response()->json(["message" => "User not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
+        return response('User found', 200);
+    }
+
+    public function changePassword(Request $request){
+        $validated = $request->validate(['password'=>'required', 'email'=>'required']);
+        $user = User::where(["email" => $validated['email']])->first();
+        if (!$user) return response()->json(["message" => "User not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
+        $user->password = Hash::make($validated['password']);
+        $user->save();
+
+        return response('Password changed successfully', 200);
+
+
+    }
 
     public function RandomString(int $length): string
     {
