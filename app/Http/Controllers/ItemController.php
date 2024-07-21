@@ -18,9 +18,9 @@ class ItemController extends Controller
     //
     public function index(): JsonResponse
     {
-        $school1 = AllSchools::where('SCHOOL_NAME', 'Acc Irrua School')->first();
-        $iruwa = NewItem::where('school', 'Acc Irrua School')->get();
-        $school1->newItems()->attach($iruwa);
+        // $school1 = AllSchools::where('SCHOOL_NAME', 'Acc Irrua School')->first();
+        // $iruwa = NewItem::where('school', 'Acc Irrua School')->get();
+        // $school1->newItems()->attach($iruwa);
         $items = Item::latest()->get();
         return response()->json(["items" => $items], Response::HTTP_OK);
     }
