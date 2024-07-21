@@ -2,21 +2,64 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AllSchools;
 use App\Models\Item;
+use App\Models\NewItem;
 use App\Services\ReportService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Validator;
 
 class ItemController extends Controller
 {
     //
     public function index(): JsonResponse
     {
+        $school1 = AllSchools::where('SCHOOL_NAME', 'Acc Irrua School')->first();
+        $iruwa = NewItem::where('school', 'Acc Irrua School')->get();
+        $school1->newItems()->attach($iruwa);
         $items = Item::latest()->get();
         return response()->json(["items" => $items], Response::HTTP_OK);
+    }
+
+    public function uploadItemsBulk(Request $request){
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|mimes:csv,txt',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+    
+        $file = $request->file('file');
+        $filePath = $file->getRealPath();
+        $fileHandle = fopen($filePath, 'r');
+    
+        $header = fgetcsv($fileHandle, 0, ',');
+    
+        while (($row = fgetcsv($fileHandle, 0, ',')) !== FALSE) {
+            $data = array_combine($header, $row);
+    
+            // Insert user data into the database
+            NewItem::create([
+                'item_code' => $data['item_code'],
+                'additional_info' => $data['additional_info'],
+                'item_name' => bcrypt($data['item_name']),
+                'subject_category'=>$data['subject_category'],
+                'distribution'=>$data['distribution'],
+                'quantity'=>$data['quantity'],
+                'school'=>$data['school'],
+                
+    
+            ]);
+        }
+    
+        fclose($fileHandle);
+    
+        return response()->json(['success' => 'File uploaded and data inserted successfully']);
     }
 
     public function show(int $id): JsonResponse

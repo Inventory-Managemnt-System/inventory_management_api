@@ -42,6 +42,7 @@ Route::prefix("item")->middleware(["auth:sanctum"])->controller(ItemController::
     Route::get("{id}", "show");
     Route::post("/", "store");
     Route::patch("{id}", "update");
+    Route::post('/upload', 'uploadItemsBulk');
 });
 
 Route::prefix("school")->middleware(['auth:sanctum'])->controller(SchoolController::class)->group(function () {

@@ -13,4 +13,8 @@ class AllSchools extends Model
     protected $casts = [
         'LGA' => 'string',
     ];
+
+    public function newItems(){
+        $this->hasMany(NewItem::class, 'all_school_id');
+    }
 }
