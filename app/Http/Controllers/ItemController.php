@@ -21,7 +21,8 @@ class ItemController extends Controller
         // $school1 = AllSchools::where('SCHOOL_NAME', 'Acc Irrua School')->first();
         // $iruwa = NewItem::where('school', 'Acc Irrua School')->get();
         // $school1->newItems()->attach($iruwa);
-        $items = Item::latest()->get();
+        // $items = Item::latest()->get();
+      $items = NewItem::all();
         return response()->json(["items" => $items], Response::HTTP_OK);
     }
 
