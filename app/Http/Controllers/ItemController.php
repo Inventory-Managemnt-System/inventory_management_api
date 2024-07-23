@@ -74,32 +74,35 @@ class ItemController extends Controller
     {
         $request = $this->validate($request, [
             "barcode_id" => "required|string",
-            "name" => "required|string",
-            "description" => "required|string",
-            "brand" => "required|string",
+            "item_name" => "required|string",
+            
+            "item_code" =>'required|string',
+            
             "category" => "required|string",
-            "value" => "required|string",
-            "image" => "required|string",
-            "unit_cost" => "required|numeric",
+            "school" => "required|string",
+            "image"=>'required|string',
+            
+            
             "quantity" => "required|numeric",
-            "reorder_point" => "required|numeric",
-            "supplier" => "required|string",
+            
+            "distribution" => "required|string",
         ]);
 
         // create item
-        $item = new Item();
-        $item->unique_id = $this->UniqueID();
+      
+        $item = new NewItem();
+        // $item->unique_id = $this->UniqueID();
         $item->barcode_id = $request['barcode_id'];
-        $item->name = $request["name"];
-        $item->description = $request["description"];
-        $item->brand = $request["brand"];
-        $item->category = $request["category"];
-        $item->value = $request["value"];
+        $item->item_name = $request["item_name"];
         $item->image = $request["image"];
-        $item->unit_cost = $request["unit_cost"];
+        // $item->brand = $request["brand"];
+        $item->subject_category = $request["category"];
+        $item->school = $request["school"];
+        $item->additional_info = 'JSS3';
+        $item->item_code = $request["item_code"];
         $item->quantity = $request["quantity"];
-        $item->reorder_point = $request["reorder_point"];
-        $item->supplier = $request["supplier"];
+        // $item->reorder_point = $request["reorder_point"];
+        $item->distribution = $request["distribution"];
         $item->save();
 
         return response()->json(["item" => $item], Response::HTTP_CREATED);
@@ -108,17 +111,18 @@ class ItemController extends Controller
     public function update(Request $request, int $id)
     {
         $request = $this->validate($request, [
-            "barcode_id" => "required|string",
-            "name" => "required|string",
-            "description" => "required|string",
-            "brand" => "required|string",
+           "barcode_id" => "required|string",
+            "item_name" => "required|string",
+            "additional_info" => "required|string",
+            "item_code" =>'required|string',
+            
             "category" => "required|string",
-            "value" => "required|string",
-            "image" => "required|string",
-            "unit_cost" => "required|numeric",
+            "school" => "required|string",
+            
+            
             "quantity" => "required|numeric",
-            "reorder_point" => "required|numeric",
-            "supplier" => "required|string",
+            
+            "distribution" => "required|string",
         ]);
 
         // find item
@@ -165,7 +169,7 @@ class ItemController extends Controller
             "barcode_id" => "required|string",
         ]);
 
-        $item = Item::where(['barcode_id' => $request['barcode_id']])->first();
+        $item = NewItem::where(['barcode_id' => $request['barcode_id']])->first();
         if(!$item) return response()->json(["message" => "Item not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
         return response()->json(["item" => $item], Response::HTTP_OK);
     }
