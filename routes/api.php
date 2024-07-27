@@ -6,6 +6,7 @@ use App\Http\Controllers\EmailController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ItemRequestController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\NotificationHistory;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\TrackingController;
@@ -37,7 +38,7 @@ Route::prefix("auth")->controller(AuthController::class)->group(function () {
    Route::post('/forgot-password', 'forgotPassword');
    Route::post('/changepassword', 'changePassword');
 });
-
+Route::get("/notification-history", [NotificationHistory::class, 'getHistory'])->middleware('auth:sanctum');
 Route::prefix("item")->middleware(["auth:sanctum"])->controller(ItemController::class)->group(function () {
     Route::post("scan", "scan");
     Route::get("inventory-report", "inventory_report");
