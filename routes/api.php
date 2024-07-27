@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DiscrepancyController;
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ItemRequestController;
 use App\Http\Controllers\NotificationController;
@@ -27,6 +28,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post("/schedule-email", [EmailController::class, 'scheduleEmail'])->middleware('auth:sanctum');
 
 Route::prefix("auth")->controller(AuthController::class)->group(function () {
    Route::post("/register", "signup");
