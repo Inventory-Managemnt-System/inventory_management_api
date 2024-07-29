@@ -22,7 +22,10 @@ class ItemController extends Controller
         // $iruwa = NewItem::where('school', 'Acc Irrua School')->get();
         // $school1->newItems()->attach($iruwa);
         // $items = Item::latest()->get();
+        
       $items = NewItem::all();
+
+
         return response()->json(["items" => $items], Response::HTTP_OK);
     }
 
@@ -89,6 +92,7 @@ class ItemController extends Controller
         ]);
 
         // create item
+       
       
         $item = new NewItem();
         // $item->unique_id = $this->UniqueID();
@@ -104,6 +108,15 @@ class ItemController extends Controller
         // $item->reorder_point = $request["reorder_point"];
         $item->distribution = $request["distribution"];
         $item->save();
+        $schools = AllSchools::all();
+
+        foreach($schools as $school){
+            if($school->SCHOOL_NAME == $request['school']){
+                $foundSchool = AllSchools::find($school->id);
+               
+                $foundSchool->items()->attach($item);
+            }
+        }
 
         return response()->json(["item" => $item], Response::HTTP_CREATED);
     }

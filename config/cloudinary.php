@@ -19,7 +19,7 @@ return [
     |
     |
     */
-    'notification_url' => env('CLOUDINARY_NOTIFICATION_URL'),
+    // 'notification_url' => env('CLOUDINARY_NOTIFICATION_URL'),
 
 
     /*
@@ -32,21 +32,27 @@ return [
     |
     |
     */
-    'cloud_url' => env('CLOUDINARY_URL'),
+    // 'cloud_url' => env('CLOUDINARY_URL'),
 
     /**
      * Upload Preset From Cloudinary Dashboard
      *
      */
-    'upload_preset' => env('CLOUDINARY_UPLOAD_PRESET'),
+    // 'upload_preset' => env('CLOUDINARY_UPLOAD_PRESET'),
 
     /**
      * Route to get cloud_image_url from Blade Upload Widget
      */
-    'upload_route' => env('CLOUDINARY_UPLOAD_ROUTE'),
+    // 'upload_route' => env('CLOUDINARY_UPLOAD_ROUTE'),
 
     /**
      * Controller action to get cloud_image_url from Blade Upload Widget
      */
-    'upload_action' => env('CLOUDINARY_UPLOAD_ACTION'),
+    // 'upload_action' => env('CLOUDINARY_UPLOAD_ACTION'),
+
+    'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+    'api_key' => env('CLOUDINARY_API_KEY'),
+    'api_secret' => env('CLOUDINARY_SECRET_KEY'),
+    'secure' => true,
+
 ];

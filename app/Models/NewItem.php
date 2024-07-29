@@ -13,6 +13,6 @@ class NewItem extends Model
     public $timestamps = false;
 
     public function school(){
-        return $this->belongsTo(AllSchools::class, 'all_school_id');
+        return $this->belongsTo(AllSchools::class, 'all_school_ids');
     }
 }

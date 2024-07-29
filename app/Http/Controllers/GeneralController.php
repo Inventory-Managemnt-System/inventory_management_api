@@ -18,12 +18,12 @@ class GeneralController extends Controller
         if($request->hasFile('file')){
            
             
-             $file = $request->file('file');
+            //  $file = $request->file('file');
 
-            $imageName = time() . $file->getClientOriginalName();
-            $filePath = $file->move(public_path('items'), $imageName);
-        //  $uploadedUrl = Cloudinary::upload($request->file('file')->getRealPath())->getSecurePath();
-            return response()->json(['url' => 'http://localhost:8000/items/'.$imageName, "success" => true], Response::HTTP_OK);
+            // $imageName = time() . $file->getClientOriginalName();
+            // $filePath = $file->move(public_path('items'), $imageName);
+         $uploadedUrl = Cloudinary::upload($request->file('file')->getRealPath())->getSecurePath();
+            return response()->json(['url' => $uploadedUrl, "success" => true], Response::HTTP_OK);
             // return response()->json(['url' => $uploadedUrl, "success" => true], Response::HTTP_OK);
         }
         return response()->json(['success' => false, 'message' => "Please upload a file"], Response::HTTP_UNPROCESSABLE_ENTITY);
