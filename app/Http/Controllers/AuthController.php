@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LogHistory;
 use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
@@ -36,6 +37,19 @@ class AuthController extends Controller
         $new_user->phone_number = $validatedData['phone_number'];
         $new_user->save();
 
+        $logHistory = new LogHistory();
+        $currentDate = Carbon::now()->toDateString();
+$currentTime = Carbon::now()->toTimeString();
+      
+        $logHistory->create([
+            'log-details'=>'User has Signed Up',
+            'email'=>$new_user->email,
+            'date'=>$currentDate,
+            'time'=>$currentTime,
+            'category'=>'Sign Up',
+        ]);
+
+
         return response()->json(["message" => "User created successfully"], Response::HTTP_CREATED);
     }
 
@@ -58,6 +72,22 @@ class AuthController extends Controller
 
         // create user auth token
         $token = $user->createToken("Auth_Token-".$user['oracle_id'],  ["*"], Carbon::now()->addMinutes(config('sanctum.expiration')))->plainTextToken;
+
+        $logHistory = new LogHistory();
+        $currentDate = Carbon::now()->toDateString();
+$currentTime = Carbon::now()->toTimeString();
+        // $table->string('email');
+        //     $table->string('time');
+        //     $table->string('date');
+        //     $table->string('category');
+        $logHistory->create([
+            'log-details'=>'User has logged in',
+            'email'=>$user->email,
+            'date'=>$currentDate,
+            'time'=>$currentTime,
+            'category'=>'Log in',
+        ]);
+
         return response()->json(["token" => $token, "user" => $user], Response::HTTP_OK);
     }
 
@@ -84,6 +114,18 @@ class AuthController extends Controller
         if (!$user) return response()->json(["message" => "User not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
         $user->password = Hash::make($validated['password']);
         $user->save();
+
+        $logHistory = new LogHistory();
+        $currentDate = Carbon::now()->toDateString();
+$currentTime = Carbon::now()->toTimeString();
+      
+        $logHistory->create([
+            'log-details'=>'User Just Changed Password',
+            'email'=>$user->email,
+            'date'=>$currentDate,
+            'time'=>$currentTime,
+            'category'=>'Change Password',
+        ]);
 
         return response('Password changed successfully', 200);
 

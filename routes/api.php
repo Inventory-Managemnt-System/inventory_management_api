@@ -5,6 +5,7 @@ use App\Http\Controllers\DiscrepancyController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ItemRequestController;
+use App\Http\Controllers\LogHistoryController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\NotificationHistory;
 use App\Http\Controllers\ProfileController;
@@ -31,6 +32,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post("/schedule-email", [EmailController::class, 'scheduleEmail'])->middleware('auth:sanctum');
+Route::get('/get-logs', [LogHistoryController::class, 'getLogs'])->middleware('auth:sanctum');
 
 Route::prefix("auth")->controller(AuthController::class)->group(function () {
    Route::post("/register", "signup");
