@@ -63,20 +63,22 @@ class NotificationController extends Controller
                
     
                 foreach ($userEmails as $email) {
-                    // Send the email
-                    Mail::send('emails.new-message', ['title' => $request->title, 'messages' => $request->message], function ($msg) use ($email) {
-                        $msg->to($email);
-                        $msg->subject('New Notification');
-                    });
-
                     $mainUser = User::where('email', $email)->first();
-
+                   
                     $notificationHistory = new NotificationHistory();
                     $notificationHistory->create([
                         'title'=>$request->title,
                         'message'=>$request->message,
                         'user_id'=>$mainUser->id
                     ]);
+
+                    // Send the email
+                    Mail::send('emails.new-message', ['title' => $request->title, 'messages' => $request->message], function ($msg) use ($email) {
+                        $msg->to($email);
+                        $msg->subject('New Notification');
+                    });
+
+                   
                     
                 }
                
@@ -98,6 +100,14 @@ class NotificationController extends Controller
                
     
                 foreach ($userEmails as $email) {
+                    $mainUser = User::where('email', $email)->first();
+                   
+                    $notificationHistory = new NotificationHistory();
+                    $notificationHistory->create([
+                        'title'=>$request->title,
+                        'message'=>$request->message,
+                        'user_id'=>$mainUser->id
+                    ]);
                     // Send the email
                     Mail::send('emails.new-message', ['title' => $request->title, 'messages' => $request->message], function ($msg) use ($email) {
                         $msg->to($email);
@@ -124,6 +134,14 @@ class NotificationController extends Controller
     
                
                 foreach ($userEmails as $email) {
+                    $mainUser = User::where('email', $email)->first();
+                   
+                    $notificationHistory = new NotificationHistory();
+                    $notificationHistory->create([
+                        'title'=>$request->title,
+                        'message'=>$request->message,
+                        'user_id'=>$mainUser->id
+                    ]);
                     // Send the email
                     Mail::send('emails.new-message', ['title' => $request->title, 'messages' => $request->message], function ($msg) use ($email) {
                         $msg->to($email);
@@ -156,6 +174,14 @@ class NotificationController extends Controller
                 
     
                 foreach ($userEmails as $email) {
+                    $mainUser = User::where('email', $email)->first();
+                   
+                    $notificationHistory = new NotificationHistory();
+                    $notificationHistory->create([
+                        'title'=>$request->title,
+                        'message'=>$request->message,
+                        'user_id'=>$mainUser->id
+                    ]);
                     // Send the email
                     Mail::send('emails.new-message', ['title' => $request->title, 'messages' => $request->message], function ($msg) use ($email) {
                         $msg->to($email);

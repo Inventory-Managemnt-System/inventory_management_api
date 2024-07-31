@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class LogHistoryController extends Controller
 {
     public function getLogs(){
-        $logs = LogHistory::all();
+        $logs = LogHistory::latest()->get();
 
         return response($logs, 200);
     }
