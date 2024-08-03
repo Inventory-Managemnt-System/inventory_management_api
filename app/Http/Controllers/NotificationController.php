@@ -13,9 +13,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class NotificationController extends Controller
 {
-    public function get_notifications(): JsonResponse
+    public function get_notifications(Request $request): JsonResponse
     {
-        $notifications = Notification::where(["user_id" => auth()->user()->id])->latest()->get();
+        $notifications = Notification::where(["user_id" => $request->user()->id])->latest()->get();
         return response()->json(["notifications" => $notifications, "success" => true], Response::HTTP_OK);
     }
 
@@ -60,6 +60,19 @@ class NotificationController extends Controller
                     $query->where('name', 'QA');
                 })->pluck('email');
 
+
+                $users = User::whereHas('role', function ($query) {
+                    $query->where('name', 'QA')->get();
+                });
+
+                foreach($users as $user){
+                    $notification = new Notification();
+            $notification->user_id = $user->id;
+            $notification->title = $request['title'];
+            $notification->body = $request['message'];
+            // $notification->attachment = $validate['attachment'];
+            $notification->save();
+                }
                
     
                 foreach ($userEmails as $email) {
@@ -97,7 +110,18 @@ class NotificationController extends Controller
                     $query->where('name', 'Warehouse Staff');
                 })->pluck('email');
     
-               
+                $users = User::whereHas('role', function ($query) {
+                    $query->where('name', 'Warehouse Staff');
+                })->get();
+
+                foreach($users as $user){
+                    $notification = new Notification();
+            $notification->user_id = $user->id;
+            $notification->title = $request['title'];
+            $notification->body = $request['message'];
+            // $notification->attachment = $validate['attachment'];
+            $notification->save();
+                }
     
                 foreach ($userEmails as $email) {
                     $mainUser = User::where('email', $email)->first();
@@ -131,6 +155,19 @@ class NotificationController extends Controller
                 $userEmails = User::whereHas('role', function ($query) {
                     $query->where('name', 'Head Teacher');
                 })->pluck('email');
+
+                $users = User::whereHas('role', function ($query) {
+                    $query->where('name', 'Head Teacher');
+                })->get();
+
+                foreach($users as $user){
+                    $notification = new Notification();
+            $notification->user_id = $user->id;
+            $notification->title = $request['title'];
+            $notification->body = $request['message'];
+            // $notification->attachment = $validate['attachment'];
+            $notification->save();
+                }
     
                
                 foreach ($userEmails as $email) {
@@ -165,9 +202,18 @@ class NotificationController extends Controller
                     $query->where('name', 'Admin');
                 })->pluck('email');
 
-                $users = User::whereHas('role', function($query){
+                $users = User::whereHas('role', function ($query) {
                     $query->where('name', 'Admin');
                 })->get();
+
+                foreach($users as $user){
+                    $notification = new Notification();
+            $notification->user_id = $user->id;
+            $notification->title = $request['title'];
+            $notification->body = $request['message'];
+            // $notification->attachment = $validate['attachment'];
+            $notification->save();
+                }
                 
                 // auth()->user()->message_count++;
                 // auth()->user()->save();

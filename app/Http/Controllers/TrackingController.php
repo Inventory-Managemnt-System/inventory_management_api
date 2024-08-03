@@ -46,4 +46,11 @@ class TrackingController extends Controller
 
         return response()->json(['item' => $tracking], 201);
     }
+
+    public function update(Request $request, $id){
+        $item = Tracking::find($id);
+        $item->status = $request->status;
+        $item->save();
+
+    }
 }
