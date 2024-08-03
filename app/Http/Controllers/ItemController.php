@@ -169,15 +169,36 @@ class ItemController extends Controller
     }
 
     public function scan(Request $request): JsonResponse
-    {
-        $request = $this->validate($request, [
+{
+    try {
+        $validatedRequest = $this->validate($request, [
             "barcode_id" => "required|string",
         ]);
 
-        $item = NewItem::where(['barcode_id' => $request['barcode_id']])->first();
-        if(!$item) return response()->json(["message" => "Item not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
-        return response()->json(["item" => $item], Response::HTTP_OK);
+        $item = NewItem::where('barcode_id', $validatedRequest['barcode_id'])->first();
+        if (!$item) {
+            return response()->json(["message" => "Item not found"], Response::HTTP_NOT_FOUND);
+        }
+
+        $response = [
+            "item_name" => $item->item_name,
+            "additional_info" => $item->additional_info,
+            "item_code" => $item->item_code,
+            "category" => $item->category,
+            "school" => $item->school,
+            "quantity" => $item->quantity,
+            "distribution" => $item->distribution,
+        ];
+
+        return response()->json($response, Response::HTTP_OK);
+    } catch (\Exception $e) {
+        // Log the error message
+        Log::error('Scan error: ' . $e->getMessage());
+
+        return response()->json(["message" => "An error occurred"], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
+}
+
 
     public function inventory_report(Request $request)
     {
