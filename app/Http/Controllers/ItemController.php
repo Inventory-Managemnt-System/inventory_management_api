@@ -171,10 +171,10 @@ class ItemController extends Controller
     public function scan(Request $request): JsonResponse
     {
         $request = $this->validate($request, [
-            "item_name" => "required|string",
+            "barcode_id" => "required|string",
         ]);
 
-        $item = NewItem::where(['item_name' => $request['item_name']])->first();
+        $item = NewItem::where(['barcode_id' => $request['barcode_id']])->first();
         if(!$item) return response()->json(["message" => "Item not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
         return response()->json(["item" => $item], Response::HTTP_OK);
     }
