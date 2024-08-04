@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Inventory Report</title>
+    <title>Latest Inventory report</title>
 </head>
 <body>
 <h1>Inventory Report</h1>
