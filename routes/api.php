@@ -41,7 +41,7 @@ Route::prefix("auth")->controller(AuthController::class)->group(function () {
    Route::post('/changepassword', 'changePassword');
 });
 Route::get("/notification-history", [NotificationHistory::class, 'getHistory'])->middleware('auth:sanctum');
-Route::prefix("item")->middleware(["auth:sanctum"])->controller(ItemController::class)->group(function () {
+Route::prefix("item")->middleware(["auth:sanctum","verified"])->controller(ItemController::class)->group(function () {
     Route::post("scan", "scan");
     Route::get("inventory-report", "inventory_report");
     Route::get("/", "index");
@@ -51,7 +51,7 @@ Route::prefix("item")->middleware(["auth:sanctum"])->controller(ItemController::
     Route::post('/upload', 'uploadItemsBulk');
 });
 
-Route::prefix("school")->middleware(['auth:sanctum'])->controller(SchoolController::class)->group(function () {
+Route::prefix("school")->middleware(['auth:sanctum', "verified"])->controller(SchoolController::class)->group(function () {
     Route::get("/", "index");
     Route::get("{id}", "show");
     Route::post("/", "store");
