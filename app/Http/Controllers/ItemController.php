@@ -23,7 +23,7 @@ class ItemController extends Controller
         // $school1->newItems()->attach($iruwa);
         // $items = Item::latest()->get();
         
-      $items = NewItem::latest()->get();
+      $items = NewItem::all();
 
 
         return response()->json(["items" => $items], Response::HTTP_OK);
