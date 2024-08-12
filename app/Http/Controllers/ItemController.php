@@ -23,7 +23,7 @@ class ItemController extends Controller
         // $school1->newItems()->attach($iruwa);
         // $items = Item::latest()->get();
         
-      $items = NewItem::all();
+      $items = NewItem::latest()->get();
 
 
         return response()->json(["items" => $items], Response::HTTP_OK);
@@ -66,9 +66,9 @@ class ItemController extends Controller
         return response()->json(['success' => 'File uploaded and data inserted successfully']);
     }
 
-    public function show(int $id): JsonResponse
+    public function show( $id): JsonResponse
     {
-        $item = Item::where(["id" => $id])->first();
+        $item = NewItem::where(["item_code" => $id])->first();
         if (!$item) return response()->json(["message" => "Item not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
         return response()->json(["item" => $item], Response::HTTP_OK);
     }
