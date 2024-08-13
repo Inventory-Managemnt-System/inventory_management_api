@@ -50,6 +50,9 @@ class TrackingController extends Controller
     public function update(Request $request, $id){
         $item = Tracking::find($id);
         $item->status = $request->status;
+        if($request->action){
+            $item->action = $request->action;
+        }
         $item->save();
 
     }
