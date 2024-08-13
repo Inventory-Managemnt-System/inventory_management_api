@@ -54,6 +54,7 @@ class TrackingController extends Controller
             $item->action = $request->action;
         }
         $item->save();
+       return response('Tracking updated successfully', 200);
 
     }
 }
