@@ -17,23 +17,27 @@ class ItemController extends Controller
 {
     //
   public function index(): JsonResponse
-    {
-        $items = NewItem::paginate(50);
-        $allItemsCount = NewItem::count();
+{
+    // Paginate the NewItem models, showing 50 items per page
+    $items = NewItem::paginate(50);
 
-        return response()->json([
-            "allItems" => count($allItems),
-            "items" => $items->items(),  // Get the actual items from the paginator
-            "pagination" => [
-                "total" => $items->total(),
-                "per_page" => $items->perPage(),
-                "current_page" => $items->currentPage(),
-                "last_page" => $items->lastPage(),
-                "next_page_url" => $items->nextPageUrl(),
-                "prev_page_url" => $items->previousPageUrl(),
-            ]
-        ], Response::HTTP_OK);
-    }
+    // Count all NewItem models directly, without applying pagination
+    $allItemsCount = NewItem::count();
+
+    // Return a JSON response with the total number of items and paginated items separately
+    return response()->json([
+        "allItems" => $allItemsCount,  // Total count of all NewItem models without pagination
+        "items" => $items->items(),  // Get the actual items from the paginator
+        "pagination" => [
+            "total" => $items->total(),  // Total number of items across all pages (still includes pagination calculation)
+            "per_page" => $items->perPage(),  // Number of items per page (50 in this case)
+            "current_page" => $items->currentPage(),  // The current page number
+            "last_page" => $items->lastPage(),  // The last page number
+            "next_page_url" => $items->nextPageUrl(),  // URL of the next page, if it exists
+            "prev_page_url" => $items->previousPageUrl(),  // URL of the previous page, if it exists
+        ]
+    ], Response::HTTP_OK);
+}
 
 
 
