@@ -18,35 +18,41 @@ class ItemController extends Controller
     //
     public function index(): JsonResponse
     {
-        // $school1 = AllSchools::where('SCHOOL_NAME', 'Acc Irrua School')->first();
-        // $iruwa = NewItem::where('school', 'Acc Irrua School')->get();
-        // $school1->newItems()->attach($iruwa);
-        // $items = Item::latest()->get();
-        
-      $items = NewItem::all();
+        $items = NewItem::paginate(50);
+        $allItems = NewItem::all();
 
-
-        return response()->json(["items" => $items], Response::HTTP_OK);
+        return response()->json([
+            "allItems" => count($allItems),
+            "items" => $items->items(),  // Get the actual items from the paginator
+            "pagination" => [
+                "total" => $items->total(),
+                "per_page" => $items->perPage(),
+                "current_page" => $items->currentPage(),
+                "last_page" => $items->lastPage(),
+                "next_page_url" => $items->nextPageUrl(),
+                "prev_page_url" => $items->previousPageUrl(),
+            ]
+        ], Response::HTTP_OK);
     }
 
     public function uploadItemsBulk(Request $request){
         $validator = Validator::make($request->all(), [
             'file' => 'required|mimes:csv,txt',
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         }
-    
+
         $file = $request->file('file');
         $filePath = $file->getRealPath();
         $fileHandle = fopen($filePath, 'r');
-    
+
         $header = fgetcsv($fileHandle, 0, ',');
-    
+
         while (($row = fgetcsv($fileHandle, 0, ',')) !== FALSE) {
             $data = array_combine($header, $row);
-    
+
             // Insert user data into the database
             NewItem::create([
                 'item_code' => $data['item_code'],
@@ -56,13 +62,13 @@ class ItemController extends Controller
                 'distribution'=>$data['distribution'],
                 'quantity'=>$data['quantity'],
                 'school'=>$data['school'],
-                
-    
+
+
             ]);
         }
-    
+
         fclose($fileHandle);
-    
+
         return response()->json(['success' => 'File uploaded and data inserted successfully']);
     }
 
@@ -78,22 +84,22 @@ class ItemController extends Controller
         $request = $this->validate($request, [
             "barcode_id" => "required|string",
             "item_name" => "required|string",
-            
+
             "item_code" =>'required|string',
-            
+
             "category" => "required|string",
             "school" => "required|string",
             "image"=>'required|string',
-            
-            
+
+
             "quantity" => "required|numeric",
-            
+
             "distribution" => "required|string",
         ]);
 
         // create item
-       
-      
+
+
         $item = new NewItem();
         // $item->unique_id = $this->UniqueID();
         $item->barcode_id = $request['barcode_id'];
@@ -108,7 +114,7 @@ class ItemController extends Controller
         // $item->reorder_point = $request["reorder_point"];
         $item->distribution = $request["distribution"];
         $item->save();
-       
+
 
         return response()->json(["item" => $item], Response::HTTP_CREATED);
     }
@@ -120,13 +126,13 @@ class ItemController extends Controller
             "item_name" => "required|string",
             "additional_info" => "required|string",
             "item_code" =>'required|string',
-            
+
             "category" => "required|string",
             "school" => "required|string",
-            
-            
+
+
             "quantity" => "required|numeric",
-            
+
             "distribution" => "required|string",
         ]);
 
@@ -182,7 +188,7 @@ class ItemController extends Controller
     public function inventory_report(Request $request)
     {
         if($request->get('lga') == 'AKOKO EDO'){
-            
+
             $edoItems = Item::where('name', 'Pencil')->orWhere('name', 'Eraser')->orWhere('name', 'Sharpner')->get();
             return response($edoItems, 200);
         }
@@ -210,19 +216,19 @@ class ItemController extends Controller
             $items = Item::all();
             return response($items, 200);
         }
-      
-        
+
+
         // if($request->get('format') == 'pdf') {
-            
+
         //     $pdfContent = ReportService::GeneratePDF($items);
         //     return response()->streamDownload(
         //         fn () => print($pdfContent),
         //         'report'
         //     );
-        // } 
-      
+        // }
+
     }
 
-  
+
 
 }
