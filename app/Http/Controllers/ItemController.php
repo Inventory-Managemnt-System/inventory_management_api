@@ -16,16 +16,24 @@ use Illuminate\Support\Facades\Validator;
 class ItemController extends Controller
 {
     //
-   public function index(): JsonResponse
-{
-    $allItems = NewItem::select('id', 'item_name', 'category', 'quantity')->get();
-    dd($allItems); // Dump items to ensure they are being fetched correctly
+  public function index(): JsonResponse
+    {
+        $items = NewItem::paginate(50);
+        $allItems = NewItem::all();
 
-    return response()->json([
-        "allItems" => $allItems->count(),
-        "items" => $allItems,
-    ], Response::HTTP_OK);
-}
+        return response()->json([
+            "allItems" => count($allItems),
+            "items" => $items->items(),  // Get the actual items from the paginator
+            "pagination" => [
+                "total" => $items->total(),
+                "per_page" => $items->perPage(),
+                "current_page" => $items->currentPage(),
+                "last_page" => $items->lastPage(),
+                "next_page_url" => $items->nextPageUrl(),
+                "prev_page_url" => $items->previousPageUrl(),
+            ]
+        ], Response::HTTP_OK);
+    }
 
 
 
