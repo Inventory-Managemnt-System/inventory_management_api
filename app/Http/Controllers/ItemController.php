@@ -16,17 +16,17 @@ use Illuminate\Support\Facades\Validator;
 class ItemController extends Controller
 {
     //
-    public function index(): JsonResponse
+   public function index(): JsonResponse
 {
-    $allItems = Cache::remember('all_items', 60, function() {
-        return NewItem::select('id', 'item_name', 'category', 'quantity')->get();
-    });
+    $allItems = NewItem::select('id', 'item_name', 'category', 'quantity')->get();
+    dd($allItems); // Dump items to ensure they are being fetched correctly
 
     return response()->json([
         "allItems" => $allItems->count(),
         "items" => $allItems,
     ], Response::HTTP_OK);
 }
+
 
 
     public function uploadItemsBulk(Request $request){
