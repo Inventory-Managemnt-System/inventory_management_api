@@ -17,23 +17,24 @@ class ItemController extends Controller
 {
     //
   public function index(): JsonResponse
-    {
-        $items = NewItem::paginate(50);
-        $allItems = NewItem::all();
+{
+    $totalItems = NewItem::count();  // Get the total count of all items
+    $items = NewItem::paginate(50);  // Paginate the items, showing 50 per page
 
-        return response()->json([
-            "allItems" => count($allItems),
-            "items" => $items->items(),  // Get the actual items from the paginator
-            "pagination" => [
-                "total" => $items->total(),
-                "per_page" => $items->perPage(),
-                "current_page" => $items->currentPage(),
-                "last_page" => $items->lastPage(),
-                "next_page_url" => $items->nextPageUrl(),
-                "prev_page_url" => $items->previousPageUrl(),
-            ]
-        ], Response::HTTP_OK);
-    }
+    return response()->json([
+        "totalItems" => $totalItems,  // Total count of all items in the database
+        "items" => $items->items(),    // Actual items on the current page
+        "pagination" => [
+            "total" => $items->total(),           // Total number of items
+            "per_page" => $items->perPage(),      // Number of items per page (50)
+            "current_page" => $items->currentPage(),  // Current page number
+            "last_page" => $items->lastPage(),    // Last page number
+            "next_page_url" => $items->nextPageUrl(),  // URL for the next page
+            "prev_page_url" => $items->previousPageUrl(), // URL for the previous page
+        ]
+    ], Response::HTTP_OK);
+}
+
 
 
 
