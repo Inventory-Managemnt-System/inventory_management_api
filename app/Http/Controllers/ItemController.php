@@ -16,19 +16,20 @@ use Illuminate\Support\Facades\Validator;
 class ItemController extends Controller
 {
     //
-  public function index(): JsonResponse
+ public function index(): JsonResponse
 {
-    
-
-    // Count all NewItem models directly, without applying pagination
+    // Count all NewItem models directly before pagination
     $allItemsCount = NewItem::count();
 
-    // Return a JSON response with the total number of items and paginated items separately
+    // Paginate the NewItem models, showing 50 items per page
+    $items = NewItem::paginate(50);
+
+    // Return a JSON response with the count of all items, the paginated items, and pagination details
     return response()->json([
-        "allItems" => $allItemsCount,  // Total count of all NewItem models without pagination
+        "count" => $allItemsCount,  // Total count of all NewItem models before pagination
         "items" => $items->items(),  // Get the actual items from the paginator
         "pagination" => [
-            "total" => $items->total(),  // Total number of items across all pages (still includes pagination calculation)
+            "total" => $items->total(),  // Total number of items across all pages
             "per_page" => $items->perPage(),  // Number of items per page (50 in this case)
             "current_page" => $items->currentPage(),  // The current page number
             "last_page" => $items->lastPage(),  // The last page number
