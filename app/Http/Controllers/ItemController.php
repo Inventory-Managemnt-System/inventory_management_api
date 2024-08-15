@@ -22,7 +22,7 @@ class ItemController extends Controller
     $allItemsCount = NewItem::count();
 
     // Paginate the NewItem models, showing 50 items per page
-    $items = NewItem::paginate(50);
+    $items = NewItem::paginate(30000);
 
     // Return a JSON response with the count of all items, the paginated items, and pagination details
     return response()->json([
