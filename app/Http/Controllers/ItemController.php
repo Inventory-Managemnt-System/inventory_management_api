@@ -19,7 +19,7 @@ class ItemController extends Controller
    public function index(): JsonResponse
     {
         $items = NewItem::paginate();
-        $allItems = NewItem::all();
+        $allItems = NewItem::count();
 
         return response()->json([
             "allItems" => count($allItems),
