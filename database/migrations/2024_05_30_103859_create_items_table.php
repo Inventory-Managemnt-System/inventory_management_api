@@ -13,20 +13,14 @@ return new class extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->string("unique_id")->unique();
-            $table->string("bar_code")->unique();
-            $table->string("name");
-            $table->text("description");
-            $table->string("brand");
-            $table->string("category")->nullable();
-            $table->string("value");
-            $table->string("image");
-
-            $table->float("unit_cost");
+            $table->string("item_code");
+            $table->string("item_name");
+            $table->string("class");
+            $table->string("subject_category");
+            $table->string("distribution");
             $table->integer("quantity");
-            $table->integer("reorder_point");
-            $table->string("supplier");
-            $table->string("status")->default("pending");
+            $table->string("category")->nullable();
+            $table->string("image")->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

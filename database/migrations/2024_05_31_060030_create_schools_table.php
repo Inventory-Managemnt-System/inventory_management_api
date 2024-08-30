@@ -14,17 +14,18 @@ return new class extends Migration
         Schema::create('schools', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('school_id');
             $table->string('school_image')->nullable();
             $table->string('website')->nullable();
-            $table->string('email')->unique();
-            $table->string('phone_number');
-            $table->string('level');
+            $table->string('email')->unique()->nullable();
+            $table->string('phone_number')->nullable();
+            $table->string('level')->nullable();
             $table->string('logo')->nullable();
-            $table->string("address");
-            $table->string("city");
-            $table->string("lga");
-            $table->string("postal_code");
-            $table->string("status")->default("pending");
+            $table->string("address")->nullable();
+            $table->string("city")->nullable();
+            $table->string("lga")->nullable();
+            $table->string("postal_code")->nullable();
+            $table->string("status")->default("active");
             $table->timestamps();
             $table->softDeletes();
         });

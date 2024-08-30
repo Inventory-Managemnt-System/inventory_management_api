@@ -42,6 +42,7 @@ class UserController extends Controller
             "level" => "required|string",
             "image" => "required|string",
             "role" => "required|string",
+            "school" => "required_if:role,head-teacher|string|nullable",
             "department" => "required|string",
         ]);
 
@@ -60,7 +61,8 @@ class UserController extends Controller
             "level" => $validated["level"],
             "image" => $validated["image"],
             "department" => $validated["department"],
-            "password" => Hash::make("password@1234")
+            "password" => Hash::make("password@1234"),
+            "school" => $validated["school"],
         ]);
         return response()->json(["message" => "User created", "user" => $user], Response::HTTP_CREATED);
     }
@@ -76,6 +78,7 @@ class UserController extends Controller
             "level" => "required|string",
             "image" => "required|string",
             "role" => "required|string",
+            "school" => "required_if:role,head-teacher|string|nullable",
             "department" => "required|string",
         ]);
 
@@ -96,6 +99,7 @@ class UserController extends Controller
             "level" => $validated["level"],
             "image" => $validated["image"],
             "department" => $validated["department"],
+            "school" => $validated["school"],
         ]);
         return response()->json(["message" => "User updated", "user" => $user], Response::HTTP_OK);
     }

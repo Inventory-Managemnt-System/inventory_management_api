@@ -12,17 +12,66 @@ class SchoolController extends Controller
 {
     public function index(): JsonResponse
     {
-        $schools = AllSchools::all();
+        $schools = School::paginate(50);
+        return response()->json([
+            "schools" => $schools->items(),
+            'count'=> $schools->total(),
+            "message" => "Fetched schools",
+            "pagination" => [
+                "total" => $schools->total(),
+                "per_page" => $schools->perPage(),
+                "current_page" => $schools->currentPage(),
+                "last_page" => $schools->lastPage(),
+                "next_page_url" => $schools->nextPageUrl(),
+                "prev_page_url" => $schools->previousPageUrl(),
+            ]
+        ], Response::HTTP_OK);
+    }
 
-        $count = AllSchools::count();
-        return response()->json(["schools" => $schools,'count'=>$count, "message" => "Fetched schools"], Response::HTTP_OK);
+    public function UploadSchools(Request $request): JsonResponse
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:csv,txt'
+        ]);
+
+        $file = $request->file('file');
+        $handle = fopen($file, "r");
+        $header = true;
+
+        while (($row = fgetcsv($handle, 1000, ",")) !== false) {
+            if($header) {
+                $header = false;
+                continue;
+            }
+            School::create([
+                'name' => $row[0],
+                'school_id' => $row[1],
+            ]);
+        }
+        fclose($handle);
+        return response()->json(["message" => "Upload success"], Response::HTTP_OK);
     }
 
     public function show(int $id): JsonResponse
     {
         $school = School::where(["id" => $id])->firstOrFail();
         if (!$school) return response()->json(["message" => "School not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
-        return response()->json(["school" => $school, "message" => "Fetched school"], Response::HTTP_OK);
+        // get school items
+        $items = $school->items($school->school_id);
+        return response()->json([
+            "message" => "Fetched school",
+            "school" => $school,
+            "items" => $items->items(),
+            "count" => $items->total(),
+            "pagination" => [
+                "total" => $items->total(),
+                "per_page" => $items->perPage(),
+                "current_page" => $items->currentPage(),
+                "last_page" => $items->lastPage(),
+                "next_page_url" => $items->nextPageUrl(),
+                "prev_page_url" => $items->previousPageUrl(),
+            ]
+        ], Response::HTTP_OK);
     }
 
     public function store(Request $request): JsonResponse

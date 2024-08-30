@@ -17,23 +17,29 @@ class ItemController extends Controller
 {
     //
    public function index(): JsonResponse
-    {
-        $items = NewItem::paginate(50);
-        $allItems = NewItem::all();
+   {
+       $user = auth()->user();
+       if ($user['role']['slug'] === "head-teacher"){
+           $items = NewItem::where(["school_id" => $user['school']])->paginate(50);
+           $allItems = NewItem::where(["school_id" => $user['school']])->get();
+       } else {
+           $items = Item::paginate(50);
+           $allItems = Item::all();
+       }
 
-        return response()->json([
-            "allItems" => count($allItems),
-            "items" => $items->items(),  // Get the actual items from the paginator
-            "pagination" => [
-                "total" => $items->total(),
-                "per_page" => $items->perPage(),
-                "current_page" => $items->currentPage(),
-                "last_page" => $items->lastPage(),
-                "next_page_url" => $items->nextPageUrl(),
-                "prev_page_url" => $items->previousPageUrl(),
-            ]
-        ], Response::HTTP_OK);
-    }
+       return response()->json([
+           "allItems" => count($allItems),
+           "items" => $items->items(),  // Get the actual items from the paginator
+           "pagination" => [
+               "total" => $items->total(),
+               "per_page" => $items->perPage(),
+               "current_page" => $items->currentPage(),
+               "last_page" => $items->lastPage(),
+               "next_page_url" => $items->nextPageUrl(),
+               "prev_page_url" => $items->previousPageUrl(),
+           ]
+       ], Response::HTTP_OK);
+   }
 
 
     public function uploadItemsBulk(Request $request){
@@ -63,8 +69,6 @@ class ItemController extends Controller
                 'distribution'=>$data['distribution'],
                 'quantity'=>$data['quantity'],
                 'school'=>$data['school'],
-
-
             ]);
         }
 
@@ -75,7 +79,7 @@ class ItemController extends Controller
 
     public function show( $id): JsonResponse
     {
-        $item = NewItem::where(["item_code" => $id])->first();
+        $item = Item::where(["item_code" => $id])->first();
         if (!$item) return response()->json(["message" => "Item not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
         return response()->json(["item" => $item], Response::HTTP_OK);
     }
@@ -85,37 +89,28 @@ class ItemController extends Controller
         $request = $this->validate($request, [
             "barcode_id" => "required|string",
             "item_name" => "required|string",
-
             "item_code" =>'required|string',
-
-            "category" => "required|string",
+            "subject_category" => "required|string",
             "school" => "required|string",
-            "image"=>'required|string',
-
-
+            "image" => 'nullable|string',
             "quantity" => "required|numeric",
-
             "distribution" => "required|string",
+            "class" => "required|string",
+            "category" => "required|string",
         ]);
 
         // create item
-
-
-        $item = new NewItem();
-        // $item->unique_id = $this->UniqueID();
+        $item = new Item();
         $item->barcode_id = $request['barcode_id'];
-        $item->item_name = $request["item_name"];
-        $item->image = $request["image"];
-        // $item->brand = $request["brand"];
-        $item->subject_category = $request["category"];
-        $item->school = $request["school"];
-        $item->additional_info = 'JSS3';
         $item->item_code = $request["item_code"];
-        $item->quantity = $request["quantity"];
-        // $item->reorder_point = $request["reorder_point"];
+        $item->item_name = $request["item_name"];
+        $item->class = $request['class'];
+        $item->subject_category = $request["subject_category"];
         $item->distribution = $request["distribution"];
+        $item->quantity = $request["quantity"];
+        $item->category = $request["category"];
+        $item->image = $request["image"];
         $item->save();
-
 
         return response()->json(["item" => $item], Response::HTTP_CREATED);
     }
@@ -123,18 +118,16 @@ class ItemController extends Controller
     public function update(Request $request, int $id)
     {
         $request = $this->validate($request, [
-           "barcode_id" => "required|string",
+            "barcode_id" => "required|string",
             "item_name" => "required|string",
-            "additional_info" => "required|string",
             "item_code" =>'required|string',
-
-            "category" => "required|string",
+            "subject_category" => "required|string",
             "school" => "required|string",
-
-
+            "image" => 'nullable|string',
             "quantity" => "required|numeric",
-
             "distribution" => "required|string",
+            "class" => "required|string",
+            "category" => "required|string",
         ]);
 
         // find item

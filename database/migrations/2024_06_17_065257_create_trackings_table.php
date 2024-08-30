@@ -13,19 +13,13 @@ return new class extends Migration
     {
         Schema::create('trackings', function (Blueprint $table) {
             $table->id();
-            $table->string("item_name");
-            $table->string("item_description");
-            $table->string("brand");
-            $table->string("category");
+            $table->foreignId("item_id")->constrained("items")->onDelete("cascade");
+            $table->foreignId("school_id")->constrained("schools")->onDelete("cascade");
             $table->string("priority");
-            $table->string("address");
-            $table->string("picking_area");
-            $table->string("building_number");
             $table->string("action");
             $table->string("reference_number");
             $table->string("additional_info")->nullable();
-            $table->string("time_moved");
-            $table->string("date_moved");
+            $table->timestamp("date_moved");
             $table->string("status")->default("pending");
             $table->timestamps();
         });

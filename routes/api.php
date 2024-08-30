@@ -41,6 +41,7 @@ Route::prefix("auth")->controller(AuthController::class)->group(function () {
    Route::post('/changepassword', 'changePassword');
 });
 Route::get("/notification-history", [NotificationHistory::class, 'getHistory'])->middleware('auth:sanctum');
+
 Route::prefix("item")->middleware(["auth:sanctum"])->controller(ItemController::class)->group(function () {
     Route::post("scan", "scan");
     Route::get("inventory-report", "inventory_report");
@@ -95,6 +96,10 @@ Route::prefix("discrepancy")->middleware(["auth:sanctum"])->controller(Discrepan
 });
 
 Route::prefix("tracking")->middleware(["auth:sanctum"])->controller(TrackingController::class)->group(function () {
+    // find schools or items
+    Route::post("find-items", "find_items");
+    Route::post("find-schools", "find_schools");
+
     Route::get("/", "index");
     Route::get("{id}", "show");
     Route::post("/", "store");
@@ -108,3 +113,4 @@ Route::prefix("item-request")->middleware(["auth:sanctum"])->controller(ItemRequ
 });
 
 Route::post("/upload", [\App\Http\Controllers\GeneralController::class, "upload"]);
+Route::post('upload-schools', [SchoolController::class, "UploadSchools"]);

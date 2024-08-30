@@ -12,6 +12,7 @@ class School extends Model
 
     protected $fillable = [
         "name",
+        "school_id",
         "website",
         "email",
         "phone_number",
@@ -22,4 +23,9 @@ class School extends Model
         "lga",
         "postal_code"
     ];
+
+    public function items($school_id)
+    {
+        return NewItem::where(['school_id' => $school_id])->paginate(50);
+    }
 }
