@@ -73,11 +73,11 @@ class NotificationController extends Controller
             // $notification->attachment = $validate['attachment'];
             $notification->save();
                 }
-               
-    
+
+
                 foreach ($userEmails as $email) {
                     $mainUser = User::where('email', $email)->first();
-                   
+
                     $notificationHistory = new NotificationHistory();
                     $notificationHistory->create([
                         'title'=>$request->title,
@@ -91,16 +91,16 @@ class NotificationController extends Controller
                         $msg->subject('New Notification');
                     });
 
-                   
-                    
+
+
                 }
-               
-               
-    
+
+
+
                  return response()->json(['message'=>'Email sent succesfully']);
             } catch (\Exception $e) {
                 // Handle errors
-               
+
                 return response()->json(['status' => 'Failed to send email', 'error' => $e->getMessage()], 500);
             }
         }
@@ -109,7 +109,7 @@ class NotificationController extends Controller
                 $userEmails = User::whereHas('role', function ($query) {
                     $query->where('name', 'Warehouse Staff');
                 })->pluck('email');
-    
+
                 $users = User::whereHas('role', function ($query) {
                     $query->where('name', 'Warehouse Staff');
                 })->get();
@@ -122,10 +122,10 @@ class NotificationController extends Controller
             // $notification->attachment = $validate['attachment'];
             $notification->save();
                 }
-    
+
                 foreach ($userEmails as $email) {
                     $mainUser = User::where('email', $email)->first();
-                   
+
                     $notificationHistory = new NotificationHistory();
                     $notificationHistory->create([
                         'title'=>$request->title,
@@ -137,15 +137,15 @@ class NotificationController extends Controller
                         $msg->to($email);
                         $msg->subject('New Notification');
                     });
-                   
-                    
+
+
                 }
-               
-    
+
+
                 return response()->json(['message'=>'Email sent successfully']);
             } catch (\Exception $e) {
                 // Handle errors
-                
+
                 return response()->json(['status' => 'Failed to send email', 'error' => $e->getMessage()], 500);
             }
         }
@@ -168,11 +168,11 @@ class NotificationController extends Controller
             // $notification->attachment = $validate['attachment'];
             $notification->save();
                 }
-    
-               
+
+
                 foreach ($userEmails as $email) {
                     $mainUser = User::where('email', $email)->first();
-                   
+
                     $notificationHistory = new NotificationHistory();
                     $notificationHistory->create([
                         'title'=>$request->title,
@@ -184,14 +184,14 @@ class NotificationController extends Controller
                         $msg->to($email);
                         $msg->subject('New Notification');
                     });
-                    
+
                 }
-               
-    
+
+
                 return response()->json(['message'=>'Message sent Successfully']);
             } catch (\Exception $e) {
                 // Handle errors
-               
+
                 return response()->json(['status' => 'Failed to send email', 'error' => $e->getMessage()], 500);
             }
         }
@@ -208,20 +208,20 @@ class NotificationController extends Controller
 
                 foreach($users as $user){
                     $notification = new Notification();
-            $notification->user_id = $user->id;
-            $notification->title = $request['title'];
-            $notification->body = $request['message'];
-            // $notification->attachment = $validate['attachment'];
-            $notification->save();
+                    $notification->user_id = $user->id;
+                    $notification->title = $request['title'];
+                    $notification->body = $request['message'];
+                    // $notification->attachment = $validate['attachment'];
+                    $notification->save();
                 }
-                
+
                 // auth()->user()->message_count++;
                 // auth()->user()->save();
-                
-    
+
+
                 foreach ($userEmails as $email) {
                     $mainUser = User::where('email', $email)->first();
-                   
+
                     $notificationHistory = new NotificationHistory();
                     $notificationHistory->create([
                         'title'=>$request->title,
@@ -237,23 +237,23 @@ class NotificationController extends Controller
                         $user->message_count++;
                         $user->save();
                     }
-                   
-                    
+
+
                 }
-               
-    
+
+
                 // return response()->json(['message'=>auth()->user()->message_count]);
                 return response()->json(['message'=>'Email sent successfully']);
             } catch (\Exception $e) {
                 // Handle errors
-               
+
                 return response()->json(['status' => 'Failed to send email', 'error' => $e->getMessage()], 500);
             }
         }
-       
 
-      
-       
+
+
+
     }
-    
+
 }

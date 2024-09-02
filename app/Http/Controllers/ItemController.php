@@ -22,13 +22,16 @@ class ItemController extends Controller
        if ($user['role']['slug'] === "head-teacher"){
            $items = NewItem::where(["school_id" => $user['school']])->paginate(50);
            $allItems = NewItem::where(["school_id" => $user['school']])->get();
+           $low_stock = NewItem::where("quantity", "<", "1")->where(["school_id" => $user['school']])->get();
        } else {
            $items = Item::paginate(50);
            $allItems = Item::all();
+           $low_stock = Item::where("quantity", "<", "1")->get();
        }
 
        return response()->json([
            "allItems" => count($allItems),
+           "low_stock" => count($low_stock),
            "items" => $items->items(),  // Get the actual items from the paginator
            "pagination" => [
                "total" => $items->total(),
@@ -41,8 +44,30 @@ class ItemController extends Controller
        ], Response::HTTP_OK);
    }
 
+   public function low_stock(): JsonResponse
+   {
+       $user = auth()->user();
+       if ($user['role']['slug'] === "head-teacher"){
+           $items = NewItem::where("quantity", "<", "1")->where(["school_id" => $user['school']])->paginate(50);
+       } else {
+           $items = Item::where("quantity", "<", "1")->paginate(50);
+       }
 
-    public function uploadItemsBulk(Request $request){
+       return response()->json([
+           "allItems" => $items->total(),
+           "items" => $items->items(),
+           "pagination" => [
+               "total" => $items->total(),
+               "per_page" => $items->perPage(),
+               "current_page" => $items->currentPage(),
+               "last_page" => $items->lastPage(),
+               "next_page_url" => $items->nextPageUrl(),
+               "prev_page_url" => $items->previousPageUrl(),
+           ]
+       ], Response::HTTP_OK);
+   }
+
+   public function uploadItemsBulk(Request $request){
         $validator = Validator::make($request->all(), [
             'file' => 'required|mimes:csv,txt',
         ]);

@@ -46,6 +46,7 @@ Route::prefix("item")->middleware(["auth:sanctum"])->controller(ItemController::
     Route::post("scan", "scan");
     Route::get("inventory-report", "inventory_report");
     Route::get("/", "index");
+    Route::get("low-stock-items", "low_stock");
     Route::get("{id}", "show");
     Route::post("/", "store");
     Route::patch("{id}", "update");
