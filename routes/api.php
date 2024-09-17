@@ -5,6 +5,7 @@ use App\Http\Controllers\DiscrepancyController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ItemRequestController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\LogHistoryController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\NotificationHistory;
@@ -41,6 +42,16 @@ Route::prefix("auth")->controller(AuthController::class)->group(function () {
    Route::post('/changepassword', 'changePassword');
 });
 Route::get("/notification-history", [NotificationHistory::class, 'getHistory'])->middleware('auth:sanctum');
+
+Route::prefix("location")->controller(LocationController::class)->group(function () {
+    Route::get("/", "index");
+    Route::get("{id}", "show");
+    Route::middleware(['auth:sanctum'])->group(function () {
+        Route::post("/", "store");
+        Route::put("{id}", "update");
+        Route::delete("{id}", "destroy");
+    });
+});
 
 Route::prefix("item")->middleware(["auth:sanctum"])->controller(ItemController::class)->group(function () {
     Route::post("scan", "scan");

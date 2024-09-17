@@ -20,6 +20,8 @@ class Item extends Model
         "quantity",
         "category",
         "image",
+        "start_location",
+        "current_location"
     ];
 
 }

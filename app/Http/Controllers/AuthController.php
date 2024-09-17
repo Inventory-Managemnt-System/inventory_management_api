@@ -40,7 +40,7 @@ class AuthController extends Controller
         $logHistory = new LogHistory();
         $currentDate = Carbon::now()->toDateString();
 $currentTime = Carbon::now()->toTimeString();
-      
+
         $logHistory->create([
             'log-details'=>'User has Signed Up',
             'email'=>$new_user->email,
@@ -57,13 +57,15 @@ $currentTime = Carbon::now()->toTimeString();
     {
         $request->validate([
             "email" => "sometimes|email",
-            "oracle_id" => "sometimes|string",
+            "school_id" => "sometimes|string",
             "password" => "required"
         ]);
 
+        $key = $request->has("school_id") ? 'school_id' : 'email';
+
         // find with oracle id or email
-        if($request->has("oracle_id")){
-            $user = User::where(["oracle_id" => $request["oracle_id"]])->with(["role"])->first();
+        if($request->has("school_id")){
+            $user = User::where(["school_id" => $request["school_id"]])->with(["role"])->first();
         } else {
             $user = User::where(["email" => $request['email']])->with(["role"])->first();
         }
@@ -71,15 +73,12 @@ $currentTime = Carbon::now()->toTimeString();
         if (!Hash::check($request['password'], $user->password)) return response()->json(["message" => "Wrong password"], Response::HTTP_UNPROCESSABLE_ENTITY);
 
         // create user auth token
-        $token = $user->createToken("Auth_Token-".$user['oracle_id'],  ["*"], Carbon::now()->addMinutes(config('sanctum.expiration')))->plainTextToken;
+        $token = $user->createToken("Auth_Token-".$user[$key],  ["*"], Carbon::now()->addMinutes(config('sanctum.expiration')))->plainTextToken;
 
         $logHistory = new LogHistory();
         $currentDate = Carbon::now()->toDateString();
-$currentTime = Carbon::now()->toTimeString();
-        // $table->string('email');
-        //     $table->string('time');
-        //     $table->string('date');
-        //     $table->string('category');
+        $currentTime = Carbon::now()->toTimeString();
+
         $logHistory->create([
             'log-details'=>'User has logged in',
             'email'=>$user->email,
@@ -118,7 +117,7 @@ $currentTime = Carbon::now()->toTimeString();
         $logHistory = new LogHistory();
         $currentDate = Carbon::now()->toDateString();
 $currentTime = Carbon::now()->toTimeString();
-      
+
         $logHistory->create([
             'log-details'=>'User Just Changed Password',
             'email'=>$user->email,
