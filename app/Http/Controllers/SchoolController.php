@@ -28,6 +28,14 @@ class SchoolController extends Controller
         ], Response::HTTP_OK);
     }
 
+    public function allSchools(): JsonResponse
+    {
+        $schools = School::all();
+        return response()->json([
+            "schools" => $schools,
+        ]);
+    }
+
     public function UploadSchools(Request $request): JsonResponse
     {
         $request->validate([
