@@ -56,24 +56,18 @@ $currentTime = Carbon::now()->toTimeString();
     public function signin(Request $request): JsonResponse
     {
         $request->validate([
-            "email" => "sometimes|email",
-            "school_id" => "sometimes|string",
+            "value" => "required|string",
             "password" => "required"
         ]);
 
-        $key = $request->has("school_id") ? 'school_id' : 'email';
-
         // find with oracle id or email
-        if($request->has("school_id")){
-            $user = User::where(["school_id" => $request["school_id"]])->with(["role"])->first();
-        } else {
-            $user = User::where(["email" => $request['email']])->with(["role"])->first();
-        }
+        $user = User::where(["school_id" => $request["value"]])->orWhere(["email" => $request["value"]])->with(["role"])->first();
+
         if (!$user) return response()->json(["message" => "User not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
         if (!Hash::check($request['password'], $user->password)) return response()->json(["message" => "Wrong password"], Response::HTTP_UNPROCESSABLE_ENTITY);
 
         // create user auth token
-        $token = $user->createToken("Auth_Token-".$user[$key],  ["*"], Carbon::now()->addMinutes(config('sanctum.expiration')))->plainTextToken;
+        $token = $user->createToken("Auth_Token-".$user['email'],  ["*"], Carbon::now()->addMinutes(config('sanctum.expiration')))->plainTextToken;
 
         $logHistory = new LogHistory();
         $currentDate = Carbon::now()->toDateString();
