@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('item_requests', function (Blueprint $table) {
             $table->id();
-            $table->string("school_name");
-            $table->string("head_teacher_name");
-            $table->string("item_name");
+            $table->foreignId("school_id")->constrained("schools");
+            $table->foreignId("item_id")->constrained("items");
+            $table->foreignId("user_id")->constrained("users");
             $table->integer("quantity");
             $table->string("comment")->nullable();
+            $table->string("status")->default("pending");
             $table->timestamps();
         });
     }
