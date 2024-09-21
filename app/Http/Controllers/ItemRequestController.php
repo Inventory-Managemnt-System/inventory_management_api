@@ -15,13 +15,15 @@ class ItemRequestController extends Controller
 {
     public function index(): JsonResponse
     {
-        $itemRequests = ItemRequest::latest()->with(['school', 'item', 'user'])->get();
+        $user = auth()->user();
+        $itemRequests = ItemRequest::where(['user_id' => $user['id']])->latest()->with(['school', 'item', 'user'])->get();
         return response()->json(["itemRequests" => $this->collection($itemRequests)], Response::HTTP_OK);
     }
 
     public function show(int $id): JsonResponse
     {
-        $itemRequest = ItemRequest::where(["id" => $id])->with(['school', 'item', 'user'])->first();
+        $user = auth()->user();
+        $itemRequest = ItemRequest::where(["id" => $id, 'user_id' => $user['id']])->with(['school', 'item', 'user'])->first();
         if (!$itemRequest) return response()->json(["message" => "Item Request not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
         return response()->json(["itemRequest" => $this->resource($itemRequest)], Response::HTTP_OK);
     }
