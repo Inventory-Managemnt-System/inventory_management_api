@@ -131,4 +131,17 @@ class SchoolController extends Controller
         $school->delete();
         return response()->json(["message" => "School deleted!"], Response::HTTP_OK);
     }
+
+    public function find_schools(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $validated = $request->validate([
+            "search" => "string|required",
+        ]);
+
+        $searchParam = trim($validated['search']);
+        $schools = School::where('name', 'LIKE', "%{$searchParam}%")
+            ->orWhere('school_id', 'LIKE', "%{$searchParam}%")->get();
+
+        return response()->json(["count" => count($schools), "schools" => $schools], 200);
+    }
 }

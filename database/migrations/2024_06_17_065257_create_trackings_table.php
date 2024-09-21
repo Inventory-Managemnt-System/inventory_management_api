@@ -17,8 +17,11 @@ return new class extends Migration
             $table->foreignId("school_id")->constrained("schools")->onDelete("cascade");
             $table->string("priority");
             $table->string("action");
+            $table->integer("quantity");
             $table->string("reference_number");
             $table->string("additional_info")->nullable();
+            $table->string("start_point")->default("warehouse");
+            $table->string("current_point")->nullable();
             $table->timestamp("date_moved");
             $table->string("status")->default("pending");
             $table->timestamps();

@@ -112,11 +112,14 @@ Route::prefix("tracking")->middleware(["auth:sanctum"])->controller(TrackingCont
     // find schools or items
     Route::post("find-items", "find_items");
     Route::post("find-schools", "find_schools");
+    Route::post("export", "exportRecords");
+    Route::get("filter", "filter_records");
 
     Route::get("/", "index");
     Route::get("{id}", "show");
     Route::post("/", "store");
     Route::put('{id}', 'update');
+    Route::put('{id}/confirm-delivery', 'confirm_delivery');
 });
 
 Route::prefix("item-request")->middleware(["auth:sanctum"])->controller(ItemRequestController::class)->group(function () {

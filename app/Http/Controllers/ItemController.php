@@ -24,9 +24,9 @@ class ItemController extends Controller
            $allItems = NewItem::where(["school_id" => $user['school']])->get();
            $low_stock = NewItem::where("quantity", "<", "1")->where(["school_id" => $user['school']])->get();
        } else {
-           $items = NewItem::paginate(50);
-           $allItems = NewItem::all();
-           $low_stock = NewItem::where("quantity", "<", "1")->get();
+           $items = Item::paginate(50);
+           $allItems = Item::all();
+           $low_stock = Item::where("quantity", "<", "1")->get();
        }
 
        return response()->json([
@@ -49,7 +49,7 @@ class ItemController extends Controller
        if ($user['role']['slug'] === "head-teacher"){
            $items = NewItem::where("quantity", "<", "1")->where(["school_id" => $user['school']])->paginate(50);
        } else {
-           $items = NewItem::where("quantity", "<", "1")->paginate(50);
+           $items = Item::where("quantity", "<", "1")->paginate(50);
        }
 
        return response()->json([
@@ -65,7 +65,8 @@ class ItemController extends Controller
            ]
        ], Response::HTTP_OK);
    }
-    public function uploadItemsBulk(Request $request){
+    public function uploadItemsBulk(Request $request): JsonResponse
+    {
         $validator = Validator::make($request->all(), [
             'file' => 'required|mimes:csv,txt',
         ]);
@@ -101,7 +102,7 @@ class ItemController extends Controller
     }
     public function show( $id): JsonResponse
     {
-        $item = NewItem::where(["item_code" => $id])->first();
+        $item = Item::where(["item_code" => $id])->first();
         if (!$item) return response()->json(["message" => "Item not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
         return response()->json(["item" => $item], Response::HTTP_OK);
     }
@@ -118,7 +119,7 @@ class ItemController extends Controller
         ]);
 
         // create item
-        $item = new NewItem();
+        $item = new Item();
         $item->barcode_id = $request['barcode_id'];
         $item->item_code = $request["item_code"];
         $item->item_name = $request["item_name"];
@@ -130,7 +131,7 @@ class ItemController extends Controller
 
         return response()->json(["item" => $item], Response::HTTP_CREATED);
     }
-    public function update(Request $request, int $id)
+    public function update(Request $request, int $id): JsonResponse
     {
         $request = $this->validate($request, [
             "barcode_id" => "required|string",
@@ -146,7 +147,7 @@ class ItemController extends Controller
         ]);
 
         // find item
-        $item = NewItem::where(['id' => $id])->first();
+        $item = Item::where(['id' => $id])->first();
         if(!$item) return response()->json(["message" => "Item not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
 
         $item->update($request);
@@ -189,7 +190,7 @@ class ItemController extends Controller
         if(!$item) return response()->json(["message" => "Item not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
         return response()->json(["item" => $item], Response::HTTP_OK);
     }
-    public function inventory_report(Request $request)
+    public function inventory_report(Request $request): \Illuminate\Foundation\Application|\Illuminate\Http\Response|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory
     {
         if($request->get('lga') == 'AKOKO EDO'){
 
@@ -231,5 +232,16 @@ class ItemController extends Controller
         //     );
         // }
 
+    }
+    public function find_items(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $validated = $request->validate([
+            "search" => "string|required",
+        ]);
+
+        $searchParam = trim($validated['search']);
+        $items = Item::where('item_name', 'LIKE', "%{$searchParam}%")->get();
+
+        return response()->json(['count' => count($items), 'items' => $items], 200);
     }
 }
