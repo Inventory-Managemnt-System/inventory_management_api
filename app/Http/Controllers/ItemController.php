@@ -127,6 +127,7 @@ class ItemController extends Controller
         $item->distribution = $request["distribution"];
         $item->quantity = $request["quantity"];
         $item->image = $request["image"];
+        $item->class = 'none';
         $item->save();
 
         return response()->json(["item" => $item], Response::HTTP_CREATED);
