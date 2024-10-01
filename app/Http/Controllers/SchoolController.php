@@ -144,4 +144,17 @@ class SchoolController extends Controller
 
         return response()->json(["count" => count($schools), "schools" => $schools], 200);
     }
+
+
+    public function lga(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $validated = $request->validate([
+            "lga" => "string|required",
+        ]);
+
+        $searchParam = trim($validated['lga']);
+        $schools = School::where('lga', "%{$searchParam}%")->get();
+
+        return response()->json(["count" => count($schools), "schools" => $schools], 200);
+    }
 }

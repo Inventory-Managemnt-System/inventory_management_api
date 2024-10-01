@@ -66,6 +66,8 @@ Route::prefix("item")->middleware(["auth:sanctum"])->controller(ItemController::
 
 Route::prefix("school")->middleware(['auth:sanctum'])->controller(SchoolController::class)->group(function () {
     Route::get("all-schools", "allSchools");
+    Route::get("search", "find_schools");
+    Route::get("lga", "lga");
     Route::get("/", "index");
     Route::get("{id}", "show");
     Route::post("/", "store");
