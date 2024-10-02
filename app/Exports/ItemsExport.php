@@ -18,7 +18,7 @@ class ItemsExport implements FromCollection, WithHeadings
      */
     public function collection()
     {
-        return collect($this->items);
+        return $this->items;
     }
 
     /**

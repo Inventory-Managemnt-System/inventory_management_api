@@ -24,7 +24,6 @@ class ReportService
 
     public static function GenerateExcel($items): ?string
     {
-        Storage::disk('local')->put('/inventoryReport.xlsx', file_get_contents($path));
          // Create an export instance with the items
          $export = new ItemsExport($items);
         

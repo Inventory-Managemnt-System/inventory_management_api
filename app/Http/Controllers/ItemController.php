@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
 use Exception;
+use App\Exports\ItemsExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
 
 class ItemController extends Controller
 {
@@ -230,19 +233,15 @@ class ItemController extends Controller
             if($items->count()){
                 if($request->get('format') == 'pdf') {
                     
-                        $pdfContent = ReportService::GeneratePDF($items);
-                        return response()->streamDownload(
-                            fn () => print($pdfContent),
-                            'report'
-                        );
+                    $pdfname = Carbon::now()->format('Ymdhms').'inventoryReport.pdf';
+                    return Excel::download(new ItemsExport($items), $pdfname, \Maatwebsite\Excel\Excel::DOMPDF);
 
                 }
 
                 if($request->get('format') == 'excel'){
                     
-                    $file_name = ReportService::GenerateExcel($items);
-                    $file_path = public_path($file_name);
-                    return response()->download($file_path);
+                    $xlsxname = Carbon::now()->format('Ymdhms').'inventoryReport.xlsx';
+                    return Excel::download(new ItemsExport($items), $xlsxname);
                     
                 }
             }
