@@ -249,7 +249,7 @@ class ItemController extends Controller
                 return response(['message'=>'No records found'], 200);  
             }
         } catch (Exception $th) {
-            return $th
+            return $th;
         }  
 
     }
