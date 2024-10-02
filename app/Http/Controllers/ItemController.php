@@ -223,32 +223,27 @@ class ItemController extends Controller
         //     $items = Item::all();
         //     return response($items, 200);
         // }
-        try {
-            $items = Item::all();
+        $items = Item::all();
 
+        if($items->count()){
             if($request->get('format') == 'pdf') {
                 
-                if($items->count()){
                     $pdfContent = ReportService::GeneratePDF($items);
                     return response()->streamDownload(
                         fn () => print($pdfContent),
                         'report'
                     );
-                }
 
-                return response(['message'=>'No records found'], 200);   
             }
 
             if($request->get('format') == 'excel'){
                 
-                if($items->count()){
-                    ReportService::GenerateExcel($items);
-                }
-
-                return response(['message'=>'No records found'], 200);  
+                return ReportService::GenerateExcel($items);
+                
             }
-        } catch (Exception $e) {
-            return $e;
+        }
+        else{
+            return response(['message'=>'No records found'], 200);  
         }
         
 
