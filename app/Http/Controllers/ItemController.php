@@ -223,9 +223,9 @@ class ItemController extends Controller
         //     return response($items, 200);
         // }
 
-
+        $items = Item::all();
         if($request->get('format') == 'pdf') {
-            $items = Item::all();
+            
             if($items->count()){
                 $pdfContent = ReportService::GeneratePDF($items);
                 return response()->streamDownload(
@@ -234,8 +234,16 @@ class ItemController extends Controller
                 );
             }
 
-            return response(['message'=>'No records found'], 200);
+            return response(['message'=>'No records found'], 200);   
+        }
+
+        if($request->get('format') == 'excel'){
             
+            if($items->count()){
+                ReportService::GenerateExcel($items);
+            }
+
+            return response(['message'=>'No records found'], 200);  
         }
 
     }
