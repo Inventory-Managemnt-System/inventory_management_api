@@ -224,14 +224,14 @@ class ItemController extends Controller
         }
 
 
-        // if($request->get('format') == 'pdf') {
+        if($request->get('format') == 'pdf') {
 
-        //     $pdfContent = ReportService::GeneratePDF($items);
-        //     return response()->streamDownload(
-        //         fn () => print($pdfContent),
-        //         'report'
-        //     );
-        // }
+            $pdfContent = ReportService::GeneratePDF($items);
+            return response()->streamDownload(
+                fn () => print($pdfContent),
+                'report'
+            );
+        }
 
     }
     public function find_items(Request $request): \Illuminate\Http\JsonResponse
