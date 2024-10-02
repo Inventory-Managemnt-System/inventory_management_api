@@ -224,7 +224,7 @@ class ItemController extends Controller
         // }
 
         $items = Item::all();
-        dd($items);
+
         if($request->get('format') == 'pdf') {
             
             if($items->count()){
