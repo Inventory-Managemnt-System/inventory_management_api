@@ -193,44 +193,49 @@ class ItemController extends Controller
     }
     public function inventory_report(Request $request): \Illuminate\Foundation\Application|\Illuminate\Http\Response|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory
     {
-        if($request->get('lga') == 'AKOKO EDO'){
+        // if($request->get('lga') == 'AKOKO EDO'){
 
-            $edoItems = Item::where('name', 'Pencil')->orWhere('name', 'Eraser')->orWhere('name', 'Sharpner')->get();
-            return response($edoItems, 200);
-        }
-        else if($request->get('lga') =='EGOR'){
-            $egorItems = Item::where('name', 'Mathematics Textbook - Grade 2')->orWhere('name', 'Mathematics Textbook – Grade 1')->get();
-            return response($egorItems, 200);
-        }
-        else if($request->get('lga') =='ESAN CENTRAL'){
-            $esanItems = Item::where('name', 'ChalkBoard')->orWhere('name', 'Laptops')->get();
-            return response($esanItems, 200);
-        }
-        else if($request->get('schoolType')  =='JSS'){
-            $edoItems = Item::where('name', 'Pencil')->orWhere('name', 'Eraser')->orWhere('name', 'Sharpner')->get();
-            return response($edoItems, 200);
-        }
-        else if($request->get('schoolType')  =='Primary'){
-            $egorItems = Item::where('name', 'Mathematics Textbook - Grade 2')->orWhere('name', 'Mathematics Textbook – Grade 1')->get();
-            return response($egorItems, 200);
-        }
-        else if($request->get('schoolType')  =='Progressive'){
-            $esanItems = Item::where('name', 'ChalkBoard')->orWhere('name', 'Laptops')->get();
-            return response($esanItems, 200);
-        }
-        else{
-            $items = Item::all();
-            return response($items, 200);
-        }
+        //     $edoItems = Item::where('name', 'Pencil')->orWhere('name', 'Eraser')->orWhere('name', 'Sharpner')->get();
+        //     return response($edoItems, 200);
+        // }
+        // else if($request->get('lga') =='EGOR'){
+        //     $egorItems = Item::where('name', 'Mathematics Textbook - Grade 2')->orWhere('name', 'Mathematics Textbook – Grade 1')->get();
+        //     return response($egorItems, 200);
+        // }
+        // else if($request->get('lga') =='ESAN CENTRAL'){
+        //     $esanItems = Item::where('name', 'ChalkBoard')->orWhere('name', 'Laptops')->get();
+        //     return response($esanItems, 200);
+        // }
+        // else if($request->get('schoolType')  =='JSS'){
+        //     $edoItems = Item::where('name', 'Pencil')->orWhere('name', 'Eraser')->orWhere('name', 'Sharpner')->get();
+        //     return response($edoItems, 200);
+        // }
+        // else if($request->get('schoolType')  =='Primary'){
+        //     $egorItems = Item::where('name', 'Mathematics Textbook - Grade 2')->orWhere('name', 'Mathematics Textbook – Grade 1')->get();
+        //     return response($egorItems, 200);
+        // }
+        // else if($request->get('schoolType')  =='Progressive'){
+        //     $esanItems = Item::where('name', 'ChalkBoard')->orWhere('name', 'Laptops')->get();
+        //     return response($esanItems, 200);
+        // }
+        // else{
+        //     $items = Item::all();
+        //     return response($items, 200);
+        // }
 
 
         if($request->get('format') == 'pdf') {
+            $items = Item::all();
+            if($items->count()){
+                $pdfContent = ReportService::GeneratePDF($items);
+                return response()->streamDownload(
+                    fn () => print($pdfContent),
+                    'report'
+                );
+            }
 
-            $pdfContent = ReportService::GeneratePDF($items);
-            return response()->streamDownload(
-                fn () => print($pdfContent),
-                'report'
-            );
+            return response(['message'=>'No records found'], 200);
+            
         }
 
     }
