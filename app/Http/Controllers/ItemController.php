@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
+use Exception;
 
 class ItemController extends Controller
 {
@@ -222,30 +223,34 @@ class ItemController extends Controller
         //     $items = Item::all();
         //     return response($items, 200);
         // }
+        try {
+            $items = Item::all();
 
-        $items = Item::all();
+            if($request->get('format') == 'pdf') {
+                
+                if($items->count()){
+                    $pdfContent = ReportService::GeneratePDF($items);
+                    return response()->streamDownload(
+                        fn () => print($pdfContent),
+                        'report'
+                    );
+                }
 
-        if($request->get('format') == 'pdf') {
-            
-            if($items->count()){
-                $pdfContent = ReportService::GeneratePDF($items);
-                return response()->streamDownload(
-                    fn () => print($pdfContent),
-                    'report'
-                );
+                return response(['message'=>'No records found'], 200);   
             }
 
-            return response(['message'=>'No records found'], 200);   
-        }
+            if($request->get('format') == 'excel'){
+                
+                if($items->count()){
+                    ReportService::GenerateExcel($items);
+                }
 
-        if($request->get('format') == 'excel'){
-            
-            if($items->count()){
-                ReportService::GenerateExcel($items);
+                return response(['message'=>'No records found'], 200);  
             }
-
-            return response(['message'=>'No records found'], 200);  
+        } catch (Exception $e) {
+            return $e;
         }
+        
 
     }
     public function find_items(Request $request): \Illuminate\Http\JsonResponse
