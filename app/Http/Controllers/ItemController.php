@@ -223,29 +223,33 @@ class ItemController extends Controller
         //     $items = Item::all();
         //     return response($items, 200);
         // }
-        $items = Item::all();
 
-        if($items->count()){
-            if($request->get('format') == 'pdf') {
-                
-                    $pdfContent = ReportService::GeneratePDF($items);
-                    return response()->streamDownload(
-                        fn () => print($pdfContent),
-                        'report'
-                    );
+        try {
+            $items = Item::all();
 
+            if($items->count()){
+                if($request->get('format') == 'pdf') {
+                    
+                        $pdfContent = ReportService::GeneratePDF($items);
+                        return response()->streamDownload(
+                            fn () => print($pdfContent),
+                            'report'
+                        );
+
+                }
+
+                if($request->get('format') == 'excel'){
+                    
+                    return ReportService::GenerateExcel($items);
+                    
+                }
             }
-
-            if($request->get('format') == 'excel'){
-                
-                return ReportService::GenerateExcel($items);
-                
+            else{
+                return response(['message'=>'No records found'], 200);  
             }
-        }
-        else{
-            return response(['message'=>'No records found'], 200);  
-        }
-        
+        } catch (Exception $th) {
+            return $th
+        }  
 
     }
     public function find_items(Request $request): \Illuminate\Http\JsonResponse
