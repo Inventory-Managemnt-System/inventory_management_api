@@ -24,19 +24,20 @@ class ReportService
 
     public static function GenerateExcel($items): ?string
     {
+        Storage::disk('local')->put('/inventoryReport.xlsx', file_get_contents($path));
          // Create an export instance with the items
-        //  $export = new ItemsExport($items);
+         $export = new ItemsExport($items);
         
          // Define the file path
-        //  $filePath = 'reports/report.xlsx';
+         $filePath = 'inventoryReport.xlsx';
          
          // Store the Excel file in the public disk
-        //  Excel::store($export, $filePath, 'public');
+         Excel::store($export, $filePath, 'public');
          
          // Return the file path
-         //return $filePath;
+         return $filePath;
 
-         return Excel::download(new ItemsExport($items), 'inventoryReport.xlsx');
+        //  return Excel::download(new ItemsExport($items), 'inventoryReport.xlsx');
     }
 
     public static function GenerateDOCX($items): string

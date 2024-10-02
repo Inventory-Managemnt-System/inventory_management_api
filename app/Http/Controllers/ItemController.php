@@ -240,7 +240,9 @@ class ItemController extends Controller
 
                 if($request->get('format') == 'excel'){
                     
-                    return ReportService::GenerateExcel($items);
+                    $file_name = ReportService::GenerateExcel($items);
+                    $file_path = public_path($file_name);
+                    return response()->download($file_path);
                     
                 }
             }
