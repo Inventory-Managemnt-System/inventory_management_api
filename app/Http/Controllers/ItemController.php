@@ -241,7 +241,12 @@ class ItemController extends Controller
                 if($request->get('format') == 'excel'){
                     
                     $xlsxname = Carbon::now()->format('Ymdhms').'inventoryReport.xlsx';
-                    return Excel::download(new ItemsExport($items), $xlsxname);
+                    $store = Excel::download(new ItemsExport($items), $xlsxname);
+                    if($store){
+                        return response()->download(public_path('storage/'.$xlsxname));
+                    }
+
+                    return response()->json(['message' => 'Report generation failed']);
                     
                 }
             }
