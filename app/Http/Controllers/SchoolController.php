@@ -12,7 +12,7 @@ class SchoolController extends Controller
 {
     public function index(): JsonResponse
     {
-        $schools = School::paginate(50);
+        $schools = School::latest()->paginate(50);
         return response()->json([
             "schools" => $schools->items(),
             'count'=> $schools->total(),
@@ -153,8 +153,12 @@ class SchoolController extends Controller
         ]);
 
         $searchParam = trim($validated['lga']);
-        $schools = School::where('lga', "%{$searchParam}%")->get();
-
+        if($searchParam == "All"){
+            $schools = School::latest()->paginate(50);
+        }else{
+            $schools = School::where('lga', "%{$searchParam}%")->get();
+        }
+        
         return response()->json(["count" => count($schools), "schools" => $schools], 200);
     }
 }
