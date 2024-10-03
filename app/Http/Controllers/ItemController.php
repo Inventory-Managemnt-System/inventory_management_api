@@ -195,7 +195,7 @@ class ItemController extends Controller
         if(!$item) return response()->json(["message" => "Item not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
         return response()->json(["item" => $item], Response::HTTP_OK);
     }
-    public function inventory_report(Request $request): \Illuminate\Foundation\Application|\Illuminate\Http\Response|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory
+    public function inventory_report(Request $request)
     {
         // if($request->get('lga') == 'AKOKO EDO'){
 
