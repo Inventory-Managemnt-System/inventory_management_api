@@ -241,8 +241,8 @@ class ItemController extends Controller
                 if($request->get('format') == 'excel'){
                     
                     $xlsxname = Carbon::now()->format('Ymdhms').'inventoryReport.xlsx';
-                    return response(['message' => $xlsxname]);
-                    // return (new ItemsExport($items))->download($xlsxname);
+                    // return response(['message' => $xlsxname]);
+                    return (new ItemsExport($items))->download($xlsxname, Excel::XLSX);
                     // return Excel::download(new ItemsExport($items), $xlsxname, null, [
                     //     'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                     // ]);
