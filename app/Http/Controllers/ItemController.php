@@ -231,12 +231,12 @@ class ItemController extends Controller
             $items = Item::all();
             
             if($items->count()){
-                // if($request->get('format') == 'pdf') {
+                if($request->get('format') == 'pdf') {
                     
-                //     $pdfname = Carbon::now()->format('Ymdhms').'inventoryReport.pdf';
-                //     return Excel::download(new ItemsExport($items), $pdfname, \Maatwebsite\Excel\Excel::DOMPDF);
+                    $pdfname = Carbon::now()->format('Ymdhms').'inventoryReport.pdf';
+                    return Excel::download(new ItemsExport($items), $pdfname, \Maatwebsite\Excel\Excel::DOMPDF);
 
-                // }
+                }
 
                 if($request->get('format') == 'excel'){
                     
