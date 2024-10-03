@@ -240,9 +240,9 @@ class ItemController extends Controller
 
                 if($request->get('format') == 'excel'){
                     
-                    // $xlsxname = Carbon::now()->format('Ymdhms').'inventoryReport.xlsx';
-                    // $store = Excel::store(new ItemsExport($items), $xlsxname, 'public');
-                    // dd($store);
+                    $xlsxname = Carbon::now()->format('Ymdhms').'inventoryReport.xlsx';
+                    $store = Excel::store(new ItemsExport($items), $xlsxname, 'public');
+                    dd($store);
                     // if($store){
                     //     return response()->download(public_path('storage/'.$xlsxname));
                     // }
