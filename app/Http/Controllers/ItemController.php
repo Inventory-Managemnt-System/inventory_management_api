@@ -229,7 +229,7 @@ class ItemController extends Controller
 
         try {
             $items = Item::all();
-            return response(['message' => 'Report generation failed']);
+            return response(['message' => $items->count()]);
             // if($items->count()){
                 // if($request->get('format') == 'pdf') {
                     
