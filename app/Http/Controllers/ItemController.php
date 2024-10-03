@@ -242,16 +242,14 @@ class ItemController extends Controller
                     
                     $xlsxname = Carbon::now()->format('Ymdhms').'inventoryReport.xlsx';
                     // return response(['message' => $xlsxname]);
-                    return (new ItemsExport($items))->download($xlsxname);
-                    // return Excel::download(new ItemsExport($items), $xlsxname, null, [
-                    //     'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-                    // ]);
-                    // dd($store);
-                    // if($store){
-                    //     return response()->download(public_path('storage/'.$xlsxname));
-                    // }
+                    // return (new ItemsExport($items))->download($xlsxname);
+                    $store = Excel::download(new ItemsExport($items), $xlsxname);
+                    dd($store);
+                    if($store){
+                        return response()->download(public_path('storage/'.$xlsxname));
+                    }
 
-                    // return response(['message' => 'Report generation failed']);
+                    return response(['message' => 'Report generation failed']);
                     
                 }
             }
