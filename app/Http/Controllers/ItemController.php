@@ -244,7 +244,6 @@ class ItemController extends Controller
                     // return response(['message' => $xlsxname]);
                     // return (new ItemsExport($items))->download($xlsxname);
                     $store = Excel::download(new ItemsExport($items), $xlsxname);
-                    dd($store);
                     if($store){
                         return response()->download(public_path('storage/'.$xlsxname));
                     }
