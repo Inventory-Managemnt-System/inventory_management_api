@@ -229,7 +229,7 @@ class ItemController extends Controller
 
         try {
             $items = Item::all();
-            return response(['message' => $items->count()]);
+            return response(['message' => $request->get('format')]);
             // if($items->count()){
                 // if($request->get('format') == 'pdf') {
                     
