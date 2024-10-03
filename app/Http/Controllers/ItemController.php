@@ -243,7 +243,7 @@ class ItemController extends Controller
                     $xlsxname = Carbon::now()->format('Ymdhms').'inventoryReport.xlsx';
                     // return response(['message' => $xlsxname]);
                     // return (new ItemsExport($items))->download($xlsxname);
-                    $store = Excel::download(new ItemsExport($items), $xlsxname);
+                    $store = Excel::store(new ItemsExport($items), $xlsxname. "public");
                     if($store){
                         return response()->download(public_path('storage/'.$xlsxname));
                     }
