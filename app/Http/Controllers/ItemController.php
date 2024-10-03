@@ -229,8 +229,8 @@ class ItemController extends Controller
 
         try {
             $items = Item::all();
-            return response(['message' => $request->get('format')]);
-            // if($items->count()){
+            
+            if($items->count()){
                 // if($request->get('format') == 'pdf') {
                     
                 //     $pdfname = Carbon::now()->format('Ymdhms').'inventoryReport.pdf';
@@ -238,7 +238,7 @@ class ItemController extends Controller
 
                 // }
 
-                // if($request->get('format') == 'excel'){
+                if($request->get('format') == 'excel'){
                     
                     // $xlsxname = Carbon::now()->format('Ymdhms').'inventoryReport.xlsx';
                     // $store = Excel::store(new ItemsExport($items), $xlsxname, 'public');
@@ -247,13 +247,13 @@ class ItemController extends Controller
                     //     return response()->download(public_path('storage/'.$xlsxname));
                     // }
 
-                    //return response()->json(['message' => 'Report generation failed']);
+                    return response(['message' => 'Report generation failed']);
                     
-                // }
-            // }
-            // else{
-            //     return response(['message'=>'No records found'], 200);  
-            // }
+                }
+            }
+            else{
+                return response(['message'=>'No records found'], 200);  
+            }
         } catch (Exception $th) {
             return $th;
         }  
