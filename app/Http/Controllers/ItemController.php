@@ -229,7 +229,7 @@ class ItemController extends Controller
 
         try {
             $items = Item::all();
-            return response()->json(['message' => 'Report generation failed']);
+            return response(['message' => 'Report generation failed']);
             // if($items->count()){
                 // if($request->get('format') == 'pdf') {
                     
@@ -247,7 +247,7 @@ class ItemController extends Controller
                     //     return response()->download(public_path('storage/'.$xlsxname));
                     // }
 
-                    return response()->json(['message' => 'Report generation failed']);
+                    //return response()->json(['message' => 'Report generation failed']);
                     
                 // }
             // }
