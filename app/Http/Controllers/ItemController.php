@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
 use Exception;
 use App\Exports\ItemsExport;
-use Maatwebsite\Excel\Excel as ExcelExcel;
 use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
 
@@ -244,13 +243,12 @@ class ItemController extends Controller
                     $xlsxname = Carbon::now()->format('Ymdhms').'inventoryReport.xlsx';
                     // return response(['message' => $xlsxname]);
                     // return (new ItemsExport($items))->download($xlsxname);
-                    // $store = Excel::store(new ItemsExport($items), $xlsxname. "public");
-                    return Excel::download(new ItemsExport($items), $xlsxname, ExcelExcel::XLSX);
-                    // if($store){
-                    //     return response()->download(public_path('storage/'.$xlsxname));
-                    // }
+                    $store = Excel::store(new ItemsExport($items), $xlsxname, "public");
+                    if($store){
+                        return response()->download(public_path('storage/'.$xlsxname));
+                    }
 
-                    // return response(['message' => 'Report generation failed']);
+                    return response(['message' => 'Report generation failed']);
                     
                 }
             }
