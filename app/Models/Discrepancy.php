@@ -18,6 +18,7 @@ class Discrepancy extends Model
         "actual_quantity",
         "discrepancy_type",
         "description",
-        "date"
+        "date",
+        "status"
     ];
 }

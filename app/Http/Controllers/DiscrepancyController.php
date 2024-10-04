@@ -62,11 +62,9 @@ class DiscrepancyController extends Controller
             "status" => 'string|required',
         ]);
 
-        $discrepancy->update([
-            'status' => $request->status
-        ]);
+        $discrepancy->update($request);
 
-        return response()->json(["message" => "Discrepancy deleted successfully"], Response::HTTP_OK);
+        return response()->json(["message" => "Discrepancy status updated successfully"], Response::HTTP_OK);
     }
 
     public function destroy(int $id): JsonResponse
