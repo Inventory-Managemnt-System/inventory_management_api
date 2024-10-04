@@ -62,7 +62,9 @@ class DiscrepancyController extends Controller
             "status" => 'string|required',
         ]);
 
-        $discrepancy->update($request);
+        $discrepancy->update([
+            'status' => $request->status
+        ]);
 
         return response()->json(["message" => "Discrepancy status updated successfully"], Response::HTTP_OK);
     }
