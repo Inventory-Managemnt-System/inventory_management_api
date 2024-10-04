@@ -153,11 +153,21 @@ class SchoolController extends Controller
         ]);
 
         $searchParam = trim($validated['lga']);
-        if($searchParam == "All"){
-            $schools = School::latest()->paginate(50);
-        }else{
-            $schools = School::where('lga', "%{$searchParam}%")->get();
-        }
+
+        $schools = School::where('lga', "%{$searchParam}%")->get();
+        
+        return response()->json(["count" => count($schools), "schools" => $schools], 200);
+    }
+
+    public function level(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $validated = $request->validate([
+            "level" => "string|required",
+        ]);
+
+        $searchParam = trim($validated['level']);
+
+        $schools = School::where('level', $searchParam)->get();
         
         return response()->json(["count" => count($schools), "schools" => $schools], 200);
     }

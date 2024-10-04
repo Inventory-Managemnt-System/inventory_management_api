@@ -68,6 +68,7 @@ Route::prefix("school")->middleware(['auth:sanctum'])->controller(SchoolControll
     Route::get("all-schools", "allSchools");
     Route::post("search", "find_schools");
     Route::post("lga", "lga");
+    Route::post("level", "level");
     Route::get("/", "index");
     Route::get("{id}", "show");
     Route::post("/", "store");
