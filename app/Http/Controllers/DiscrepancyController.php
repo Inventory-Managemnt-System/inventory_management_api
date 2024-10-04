@@ -9,12 +9,19 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DiscrepancyController extends Controller
 {
-    //
+    
     public function index(): JsonResponse
     {
-        $discrepancies = Discrepancy::all();
+        $discrepancies = Discrepancy::where('status', 'review')->get();
         return response()->json(["discrepancies" => $discrepancies], Response::HTTP_OK);
     }
+
+    public function resolved(): JsonResponse
+    {
+        $discrepancies = Discrepancy::where('status', 'resolved')->get();
+        return response()->json(["discrepancies" => $discrepancies], Response::HTTP_OK);
+    }
+
 
     public function show(int $id): JsonResponse
     {
@@ -43,6 +50,23 @@ class DiscrepancyController extends Controller
         $discrepancy->fill($validated);
         $discrepancy->save();
         return response()->json(["discrepancy" => $discrepancy], Response::HTTP_CREATED);
+    }
+
+
+    public function update_status(Request $request, int $id): JsonResponse
+    {
+        $discrepancy = Discrepancy::where(['id' => $id])->first();
+        if(!$discrepancy)  return response()->json(["message" => "Discrepancy not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
+        
+        $validated = $this->validate($request, [
+            "status" => 'string|required',
+        ]);
+
+        $discrepancy->update([
+            'status' => $request->status
+        ]);
+
+        return response()->json(["message" => "Discrepancy deleted successfully"], Response::HTTP_OK);
     }
 
     public function destroy(int $id): JsonResponse

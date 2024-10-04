@@ -104,7 +104,9 @@ Route::prefix("user")->middleware(["auth:sanctum"])->controller(UserController::
 
 Route::prefix("discrepancy")->middleware(["auth:sanctum"])->controller(DiscrepancyController::class)->group(function () {
     Route::get("/", "index");
+    Route::get("/resolved", "resolved");
     Route::get("{id}", "show");
+    Route::patch("status/{id}", "update_status");
     Route::post("/", "store");
     Route::delete("delete-multiple", "deleteMultiple");
     Route::delete("{id}", "destroy");
