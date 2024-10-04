@@ -154,7 +154,7 @@ class SchoolController extends Controller
 
         $searchParam = trim($validated['lga']);
 
-        $schools = School::where('lga', "%{$searchParam}%")->get();
+        $schools = School::where('lga', $searchParam)->get();
         
         return response()->json(["count" => count($schools), "schools" => $schools], 200);
     }
