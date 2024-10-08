@@ -23,7 +23,7 @@ class TrackingController extends Controller
         if ($user['role']['slug'] === "head-teacher"){
             // find school
             $school = School::where(["school_id" => $user['school']])->first();
-            $items = Tracking::where(['school_id' => $school['id'], "current_point" => 'school'])->latest()->get();
+            $items = Tracking::where(['school_id' => $school['id']])->latest()->get();
         } else {
             $items = Tracking::latest()->get();
         }
