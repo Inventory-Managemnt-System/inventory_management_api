@@ -35,7 +35,8 @@ class ItemController extends Controller
 
        return response()->json([
            "allItems" => count($allItems),
-           "low_stock" => count($low_stock),
+           "lowStock" => count($low_stock),
+           "lowStockItems" => $low_stock,
            "items" => $items->items(),  // Get the actual items from the paginator
            "pagination" => [
                "total" => $items->total(),
