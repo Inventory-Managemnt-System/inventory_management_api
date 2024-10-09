@@ -235,8 +235,6 @@ class ItemController extends Controller
             // }
 
             $items = Item::all();
-
-            return response($items, 200);
             
             if($items->count()){
                 return response($items, 200);
