@@ -232,26 +232,9 @@ class ItemController extends Controller
             $items = Item::all();
             
             if($items->count()){
-                if($request->get('format') == 'pdf') {
-                    
-                    $pdfname = Carbon::now()->format('Ymdhms').'inventoryReport.pdf';
-                    return Excel::download(new ItemsExport($items), $pdfname, \Maatwebsite\Excel\Excel::DOMPDF);
 
-                }
-
-                if($request->get('format') == 'excel'){
+                return response($items, 200);
                     
-                    $xlsxname = Carbon::now()->format('Ymdhms').'inventoryReport.xlsx';
-                    // return response(['message' => $xlsxname]);
-                    // return (new ItemsExport($items))->download($xlsxname);
-                    $store = Excel::store(new ItemsExport($items), $xlsxname, "public");
-                    if($store){
-                        return response()->download(public_path('storage/'.$xlsxname));
-                    }
-
-                    return response(['message' => 'Report generation failed']);
-                    
-                }
             }
             else{
                 return response(['message'=>'No records found'], 200);  
