@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Location;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -11,69 +11,68 @@ class CategoryController extends Controller
 {
     public function index(): JsonResponse
     {
-        $locations = Location::all();
+        $category = Category::all();
         return response()->json([
-            "message" => "Fetched locations successfully",
-            "data" => $locations
+            "message" => "Fetched categories successfully",
+            "data" => $category
         ]);
     }
 
     public function show(int $id): JsonResponse
     {
-        $location = Location::where("id", $id)->first();
-        if (!$location) return response()->json(["message" => "Location not found"], 422);
+        $category = Category::where("id", $id)->first();
+        if (!$category) return response()->json(["message" => "category not found"], 422);
         return response()->json([
-            "message" => "Fetched location successfully",
-            "data" => $location
+            "message" => "Fetched category successfully",
+            "data" => $category
         ]);
     }
 
     public function store(Request $request): JsonResponse
     {
         $validate = $this->validate($request, [
-            "title" => "required|string",
+            "name" => "required|string",
             "description" => "nullable|string",
         ]);
 
-        $location = new Location();
-        $location->title = $validate["title"];
-        $location->description = $validate["description"];
-        $location->slug = Str::slug($validate['title']);
-        $location->save();
+        $category = new Category();
+        $category->name = $validate["name"];
+        $category->description = $validate["description"];
+        $category->slug = Str::slug($validate['name']);
+        $category->save();
 
         return response()->json([
-            "message" => "Location created successfully",
-            "data" => $location
+            "message" => "Category created successfully",
+            "data" => $category
         ], 201);
     }
 
     public function update(Request $request, int $id): JsonResponse
     {
         $validate = $this->validate($request, [
-            "title" => "required|string",
+            "name" => "required|string",
             "description" => "nullable|string",
         ]);
-        $location = Location::where("id", $id)->first();
-        if (!$location) return response()->json(["message" => "Location not found"], 422);
+        $category = Category::where("id", $id)->first();
+        if (!$category) return response()->json(["message" => "Category not found"], 422);
 
-        $location->title = $validate["title"];
-        $location->description = $validate["description"];
-        $location->slug = Str::slug($validate['title']);
-        $location->save();
+        $category->name = $validate["title"];
+        $category->description = $validate["description"];
+        $category->save();
 
         return response()->json([
-            "message" => "Location updated successfully",
-            "data" => $location
+            "message" => "Category updated successfully",
+            "data" => $category
         ], 200);
     }
 
     public function destroy(int $id): JsonResponse
     {
-        $location = Location::where("id", $id)->first();
-        if (!$location) return response()->json(["message" => "Location not found"], 422);
-        $location->delete();
+        $category = Category::where("id", $id)->first();
+        if (!$category) return response()->json(["message" => "Category not found"], 422);
+        $category->delete();
         return response()->json([
-            "message" => "Location deleted successfully"
+            "message" => "Category deleted successfully"
         ]);
     }
 }

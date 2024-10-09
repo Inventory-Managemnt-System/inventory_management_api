@@ -1,21 +1,22 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DiscrepancyController;
-use App\Http\Controllers\EmailController;
-use App\Http\Controllers\ItemController;
-use App\Http\Controllers\ItemRequestController;
-use App\Http\Controllers\LocationController;
-use App\Http\Controllers\LogHistoryController;
-use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\NotificationHistory;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SchoolController;
-use App\Http\Controllers\TrackingController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserSettingsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\EmailController;
+use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LocationController;
+use App\Http\Controllers\TrackingController;
+use App\Http\Controllers\NotificationHistory;
+use App\Http\Controllers\LogHistoryController;
+use App\Http\Controllers\DiscrepancyController;
+use App\Http\Controllers\ItemRequestController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\UserSettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,16 @@ Route::prefix("auth")->controller(AuthController::class)->group(function () {
 Route::get("/notification-history", [NotificationHistory::class, 'getHistory'])->middleware('auth:sanctum');
 
 Route::prefix("location")->controller(LocationController::class)->group(function () {
+    Route::get("/", "index");
+    Route::get("{id}", "show");
+    Route::middleware(['auth:sanctum'])->group(function () {
+        Route::post("/", "store");
+        Route::put("{id}", "update");
+        Route::delete("{id}", "destroy");
+    });
+});
+
+Route::prefix("category")->controller(CategoryController::class)->group(function () {
     Route::get("/", "index");
     Route::get("{id}", "show");
     Route::middleware(['auth:sanctum'])->group(function () {
