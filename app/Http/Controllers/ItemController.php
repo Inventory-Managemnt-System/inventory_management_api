@@ -233,7 +233,14 @@ class ItemController extends Controller
             // if($request->get('format') == 'pdf') {
 
             // }
+            dd('Here');
+            $user = auth()->user();
+            if ($user['role']['slug'] === "head-teacher"){
 
+            }
+            else{
+                
+            }
             $items = Item::all();
             
             if($items->count()){
