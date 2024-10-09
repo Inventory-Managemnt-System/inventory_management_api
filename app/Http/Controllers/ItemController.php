@@ -229,12 +229,15 @@ class ItemController extends Controller
         // }
 
         try {
+
+            // if($request->get('format') == 'pdf') {
+
+            // }
+
             $items = Item::all();
             
             if($items->count()){
-
                 return response($items, 200);
-                    
             }
             else{
                 return response(['message'=>'No records found'], 200);  
