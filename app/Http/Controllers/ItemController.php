@@ -241,7 +241,7 @@ class ItemController extends Controller
             else{
                 
             }
-            $items = Item::limit(50)->get();
+            $items = Item::limit(50)->orderByDesc('id')->get();
             
             if($items->count()){
                 return response(['data'=>$items], 200);
