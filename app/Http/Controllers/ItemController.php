@@ -241,7 +241,7 @@ class ItemController extends Controller
             else{
                 
             }
-            $items = Item::all();
+            $items = Item::limit(50);
             
             if($items->count()){
                 return response($items, 200);
