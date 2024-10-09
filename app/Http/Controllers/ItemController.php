@@ -244,7 +244,7 @@ class ItemController extends Controller
             $items = Item::limit(50)->get();
             
             if($items->count()){
-                return response(['dara'=>$items], 200);
+                return response(['data'=>$items], 200);
             }
             else{
                 return response(['message'=>'No records found'], 200);  
