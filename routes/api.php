@@ -49,7 +49,7 @@ Route::prefix("location")->controller(LocationController::class)->group(function
     Route::get("{id}", "show");
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::post("/", "store");
-        Route::put("{id}", "update");
+        Route::patch("{id}", "update");
         Route::delete("{id}", "destroy");
     });
 });
@@ -59,7 +59,7 @@ Route::prefix("category")->controller(CategoryController::class)->group(function
     Route::get("{id}", "show");
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::post("/", "store");
-        Route::put("{id}", "update");
+        Route::patch("{id}", "update");
         Route::delete("{id}", "destroy");
     });
 });
