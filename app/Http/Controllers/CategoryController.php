@@ -56,7 +56,7 @@ class CategoryController extends Controller
         $category = Category::where("id", $id)->first();
         if (!$category) return response()->json(["message" => "Category not found"], 422);
 
-        $category->name = $validate["title"];
+        $category->name = $validate["name"];
         $category->description = $validate["description"];
         $category->save();
 
