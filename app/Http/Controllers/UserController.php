@@ -40,6 +40,7 @@ class UserController extends Controller
             "role" => "required|string",
             "school" => "required_if:role,head-teacher|string|nullable",
             "department" => "required|string",
+            "location" => "required_if:role,subeb-user|numeric|nullable",
         ]);
 
         // find role
@@ -59,6 +60,7 @@ class UserController extends Controller
             "department" => $validated["department"],
             "password" => Hash::make("password@1234"),
             "school" => $validated["school"],
+            "location_id" => $validated["location"],
         ]);
         if ($validated['role'] === "head-teacher") {
             $user->school_id = $this->GenerateSchoolID();
@@ -79,6 +81,7 @@ class UserController extends Controller
             "role" => "required|string",
             "school" => "required_if:role,head-teacher|string|nullable",
             "department" => "required|string",
+            "location" => "required_if:role,subeb-user|numeric|nullable",
         ]);
 
         $user = User::where(["id" => $id])->firstOrFail();
@@ -99,6 +102,7 @@ class UserController extends Controller
             "image" => $validated["image"],
             "department" => $validated["department"],
             "school" => $validated["school"],
+            "location_id" => $validated["location"],
         ]);
         return response()->json(["message" => "User updated", "user" => $user], Response::HTTP_OK);
     }
