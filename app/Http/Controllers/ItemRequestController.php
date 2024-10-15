@@ -25,6 +25,8 @@ class ItemRequestController extends Controller
             $itemRequests = ItemRequest::latest()->with(['school', 'item', 'user'])->get();
              return response()->json(["itemRequests" => $this->collection($itemRequests)], Response::HTTP_OK);
         }
+
+        return response()->json(["itemRequests" => $this->collection(collect([]))], Response::HTTP_OK);
         
     }
 
@@ -58,6 +60,21 @@ class ItemRequestController extends Controller
         $itemRequest->comment = $validated["comment"];
         $itemRequest->save();
         return response()->json(["itemRequest" => $itemRequest], Response::HTTP_CREATED);
+    }
+
+    public function search(Request $request): JsonResponse
+    {
+        $validated = $this->validate($request, [
+            "school_id" => 'numeric|nullable',
+            "location_id" => 'numeric|nullable',
+            "status" => 'string|nullable',
+            "start_date" => 'string|nullable',
+            "end_date" => 'string|nullable'
+        ]);
+
+        $itemRequest = ItemRequest::where($validated)->get();
+
+        return response()->json(["itemRequest" => $this->collection($itemRequest)], Response::HTTP_CREATED);
     }
 
     public function collection(Collection $collection): array
