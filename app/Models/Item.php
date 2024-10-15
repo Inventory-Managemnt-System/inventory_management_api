@@ -31,8 +31,8 @@ class Item extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function location(): BelongsTo
+    public function category(): BelongsTo
     {
-        return $this->belongsTo(Location::class);
+        return $this->belongsTo(Category::class);
     }
 }
