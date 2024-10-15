@@ -117,11 +117,11 @@ class ItemController extends Controller
             "barcode_id" => "required|string",
             "item_name" => "required|string",
             "item_code" =>'required|string',
-            "subject_category" => "required|string",
+            "subject_category" => "nullable|string",
             "image" => 'nullable|string',
             "quantity" => "required|numeric",
-            "category" => "required|numeric",
-            "distribution" => "required|string",
+            "category_id" => "required|numeric",
+            "distribution" => "nullable|string",
         ]);
 
         // create item
