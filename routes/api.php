@@ -140,9 +140,9 @@ Route::prefix("tracking")->middleware(["auth:sanctum"])->controller(TrackingCont
 
 Route::prefix("item-request")->middleware(["auth:sanctum"])->controller(ItemRequestController::class)->group(function () {
     Route::get("/", "index");
-    Route::post("/search", "store");
+    Route::post("/search", "search");
     Route::get("{id}", "show");
-    Route::post("/", "search");
+    Route::post("/", "store");
 });
 
 Route::post("/upload", [\App\Http\Controllers\GeneralController::class, "upload"]);
