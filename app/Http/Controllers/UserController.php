@@ -26,7 +26,7 @@ class UserController extends Controller
     {
         $user = User::where(["id" => $id])->firstOrFail();
         if(!$user) return response()->json(["message" => "User not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
-        return response()->json(["user" => $user, "message" => "Fetched user"], Response::HTTP_OK);
+        return response()->json(["user" => $user->load('location'), "message" => "Fetched user"], Response::HTTP_OK);
     }
     public function store(Request $request): JsonResponse
     {

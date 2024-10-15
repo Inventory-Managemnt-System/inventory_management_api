@@ -49,4 +49,15 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+
+    /**
+     * Get the location associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function location(): HasOne
+    {
+        return $this->hasOne(Location::class);
+    }
 }
