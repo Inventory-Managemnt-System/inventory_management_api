@@ -68,8 +68,8 @@ class ItemRequestController extends Controller
             "school_id" => 'numeric|nullable',
             "location_id" => 'numeric|nullable',
             "status" => 'string|nullable',
-            "start_date" => 'string|nullable',
-            "end_date" => 'string|nullable'
+            // "start_date" => 'string|nullable',
+            // "end_date" => 'string|nullable'
         ]);
 
         $where = [
