@@ -116,7 +116,7 @@ class ItemController extends Controller
         $request = $this->validate($request, [
             "barcode_id" => "required|string",
             "item_name" => "required|string",
-            "item_code" =>'required|string',
+            "item_code" =>'nullable|string',
             "subject_category" => "nullable|string",
             "image" => 'nullable|string',
             "quantity" => "required|numeric",
@@ -144,12 +144,12 @@ class ItemController extends Controller
         $request = $this->validate($request, [
             "barcode_id" => "required|string",
             "item_name" => "required|string",
-            "item_code" =>'required|string',
-            "subject_category" => "required|string",
+            "item_code" =>'nullable|string',
+            "subject_category" => "nullable|string",
             "school" => "required|string",
             "image" => 'nullable|string',
             "quantity" => "required|numeric",
-            "distribution" => "required|string",
+            "distribution" => "nullable|string",
             "class" => "required|string",
             "category" => "required|string",
         ]);
