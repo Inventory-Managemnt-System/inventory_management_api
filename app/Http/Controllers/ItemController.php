@@ -28,7 +28,7 @@ class ItemController extends Controller
            $allItems = NewItem::where(["school_id" => $user['school']])->get();
            $low_stock = NewItem::where("quantity", "<", "1")->where(["school_id" => $user['school']])->get();
        } else {
-           $items = Item::paginate(50);
+           $items = Item::with("category")->paginate(50);
            $allItems = Item::all();
            $low_stock = Item::where("quantity", "<", "1")->get();
        }
@@ -109,7 +109,7 @@ class ItemController extends Controller
     {
         $item = Item::where(["item_code" => $id])->first();
         if (!$item) return response()->json(["message" => "Item not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
-        return response()->json(["item" => $item], Response::HTTP_OK);
+        return response()->json(["item" => $item->load("category")], Response::HTTP_OK);
     }
     public function store(Request $request): JsonResponse
     {
@@ -120,6 +120,7 @@ class ItemController extends Controller
             "subject_category" => "required|string",
             "image" => 'nullable|string',
             "quantity" => "required|numeric",
+            "category" => "required|numeric",
             "distribution" => "required|string",
         ]);
 
@@ -131,6 +132,7 @@ class ItemController extends Controller
         $item->subject_category = $request["subject_category"];
         $item->distribution = $request["distribution"];
         $item->quantity = $request["quantity"];
+        $item->category_id = $request["category_id"];
         $item->image = $request["image"];
         $item->class = 'none';
         $item->save();
