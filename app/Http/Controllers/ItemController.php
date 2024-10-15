@@ -151,7 +151,7 @@ class ItemController extends Controller
             "quantity" => "required|numeric",
             "distribution" => "nullable|string",
             "class" => "required|string",
-            "category" => "required|string",
+            "category_id" => "required|string",
         ]);
 
         // find item
