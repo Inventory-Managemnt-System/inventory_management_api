@@ -16,8 +16,16 @@ class ItemRequestController extends Controller
     public function index(): JsonResponse
     {
         $user = auth()->user();
-        $itemRequests = ItemRequest::where(['user_id' => $user['id']])->latest()->with(['school', 'item', 'user'])->get();
-        return response()->json(["itemRequests" => $this->collection($itemRequests)], Response::HTTP_OK);
+        if ($user['role']['slug'] === "head-teacher"){
+            $itemRequests = ItemRequest::where(['user_id' => $user['id']])->latest()->with(['school', 'item', 'user'])->get();
+            return response()->json(["itemRequests" => $this->collection($itemRequests)], Response::HTTP_OK);
+        }
+
+        if($user['role']['slug'] === "admin"){
+            $itemRequests = ItemRequest::latest()->with(['school', 'item', 'user'])->get();
+             return response()->json(["itemRequests" => $this->collection($itemRequests)], Response::HTTP_OK);
+        }
+        
     }
 
     public function show(int $id): JsonResponse
