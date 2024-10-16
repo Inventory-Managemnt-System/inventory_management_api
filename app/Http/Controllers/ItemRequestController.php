@@ -72,20 +72,22 @@ class ItemRequestController extends Controller
             "end_date" => 'string|nullable'
         ]);
 
+        $school_id = $validated["school_id"];
+
 
         $query = ItemRequest::query();
 
-        $query->when($validated["school_id"], function($q, $validated){
-            return $q->where("school_id", $validated["school_id"]);
+        $query->when($school_id, function($q, $school_id){
+            return $q->where("school_id", $school_id);
         });
 
-        $query->when($validated["location_id"], function($q, $validated){
-            return $q->where("location_id", $validated["location_id"]);
-        });
+        // $query->when($validated["location_id"], function($q, $validated){
+        //     return $q->where("location_id", $validated["location_id"]);
+        // });
 
-        $query->when($validated["status"], function($q, $validated){
-            return $q->where("status", $validated["status"]);
-        });
+        // $query->when($validated["status"], function($q, $validated){
+        //     return $q->where("status", $validated["status"]);
+        // });
 
         $itemRequest = $query->get();
 
