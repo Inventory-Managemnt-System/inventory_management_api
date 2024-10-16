@@ -68,17 +68,17 @@ class ItemRequestController extends Controller
             "school_id" => 'numeric|nullable',
             "location_id" => 'numeric|nullable',
             "status" => 'string|nullable',
-            // "start_date" => 'string|nullable',
-            // "end_date" => 'string|nullable'
+            "start_date" => 'string|nullable',
+            "end_date" => 'string|nullable'
         ]);
 
-        $where = [
-            "school_id" => $validated["school_id"],
-            "location_id" => $validated["location_id"],
-            "status" => $validated["status"]
-        ];
+        $query = ItemRequest::query();
 
-        $itemRequest = ItemRequest::where($validated)->get();
+        $query->when($request->school_id, function($q, $request){
+            return $q->where("school_id", $request->school_id);
+        });
+
+        $itemRequest = $query->get();
 
         return response()->json(["itemRequest" => $this->collection($itemRequest)], Response::HTTP_CREATED);
     }
