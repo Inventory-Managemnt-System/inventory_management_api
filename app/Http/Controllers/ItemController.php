@@ -214,13 +214,13 @@ class ItemController extends Controller
             $cat = $request->cat;
             $schoolType = $request->schoolType;
 
-            $items = Item::query();
+            $query = Item::query();
 
-            $items->when($max, function($q, $max){
+            $query->when($max, function($q, $max){
                 return $q->where("quantity", ">=", $max);
             });
 
-            $items->when($cat, function($q, $cat){
+            $query->when($cat, function($q, $cat){
                 return $q->where("category_id", $cat);
             });
 
@@ -228,7 +228,7 @@ class ItemController extends Controller
             //     return $q->where("quantity", $schoolType);
             // });
 
-            $items->get();
+            $items = $query->get();
             
             if($items->count()){
                 return response(['data'=>$items], 200);
