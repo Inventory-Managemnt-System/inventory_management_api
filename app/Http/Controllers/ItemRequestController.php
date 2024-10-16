@@ -72,6 +72,8 @@ class ItemRequestController extends Controller
             "end_date" => 'string|nullable'
         ]);
 
+        return response()->json($validated);
+
         $query = ItemRequest::query();
 
         $query->when($validated["school_id"], function($q, $validated){
