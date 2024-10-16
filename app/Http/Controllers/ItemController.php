@@ -228,7 +228,7 @@ class ItemController extends Controller
             //     return $q->where("quantity", $schoolType);
             // });
 
-            $items = $query->get();
+            $items = $query->limit(5000)->get();
             
             if($items->count()){
                 return response(['data'=>$items], 200);
