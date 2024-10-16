@@ -73,6 +73,10 @@ class ItemRequestController extends Controller
         ]);
 
         $school_id = $validated["school_id"];
+        $location_id = $validated["location_id"];
+        $status = $validated["status"];
+        $start_date = $validated["start_date"];
+        $end_date = $validated["end_date"];
 
 
         $query = ItemRequest::query();
@@ -81,13 +85,21 @@ class ItemRequestController extends Controller
             return $q->where("school_id", $school_id);
         });
 
-        // $query->when($validated["location_id"], function($q, $validated){
-        //     return $q->where("location_id", $validated["location_id"]);
-        // });
+        $query->when($location_id, function($q, $location_id){
+            return $q->where("location_id", $location_id);
+        });
 
-        // $query->when($validated["status"], function($q, $validated){
-        //     return $q->where("status", $validated["status"]);
-        // });
+        $query->when($status, function($q, $status){
+            return $q->where("status", $status);
+        });
+
+        $query->when($start_date, function($q, $start_date){
+            return $q->where("start_date", "=>", $start_date);
+        });
+
+        $query->when($end_date, function($q, $end_date){
+            return $q->where("end_date", "=<", $end_date);
+        });
 
         $itemRequest = $query->get();
 
