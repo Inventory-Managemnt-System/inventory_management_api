@@ -200,41 +200,8 @@ class ItemController extends Controller
     }
     public function inventory_report(Request $request)
     {
-        // if($request->get('lga') == 'AKOKO EDO'){
-
-        //     $edoItems = Item::where('name', 'Pencil')->orWhere('name', 'Eraser')->orWhere('name', 'Sharpner')->get();
-        //     return response($edoItems, 200);
-        // }
-        // else if($request->get('lga') =='EGOR'){
-        //     $egorItems = Item::where('name', 'Mathematics Textbook - Grade 2')->orWhere('name', 'Mathematics Textbook – Grade 1')->get();
-        //     return response($egorItems, 200);
-        // }
-        // else if($request->get('lga') =='ESAN CENTRAL'){
-        //     $esanItems = Item::where('name', 'ChalkBoard')->orWhere('name', 'Laptops')->get();
-        //     return response($esanItems, 200);
-        // }
-        // else if($request->get('schoolType')  =='JSS'){
-        //     $edoItems = Item::where('name', 'Pencil')->orWhere('name', 'Eraser')->orWhere('name', 'Sharpner')->get();
-        //     return response($edoItems, 200);
-        // }
-        // else if($request->get('schoolType')  =='Primary'){
-        //     $egorItems = Item::where('name', 'Mathematics Textbook - Grade 2')->orWhere('name', 'Mathematics Textbook – Grade 1')->get();
-        //     return response($egorItems, 200);
-        // }
-        // else if($request->get('schoolType')  =='Progressive'){
-        //     $esanItems = Item::where('name', 'ChalkBoard')->orWhere('name', 'Laptops')->get();
-        //     return response($esanItems, 200);
-        // }
-        // else{
-        //     $items = Item::all();
-        //     return response($items, 200);
-        // }
 
         try {
-
-            // if($request->get('format') == 'pdf') {
-
-            // }
 
             $user = auth()->user();
             if ($user['role']['slug'] === "head-teacher"){
@@ -243,7 +210,25 @@ class ItemController extends Controller
             else{
                 
             }
-            $items = Item::limit(50)->orderByDesc('id')->get();
+            $max = $request->max;
+            $cat = $request->cat;
+            $schoolType = $request->schoolType;
+
+            $items = Item::query();
+
+            $items->when($max, function($q, $max){
+                return $q->where("quantity", ">=", $max);
+            });
+
+            $items->when($cat, function($q, $cat){
+                return $q->where("category_id", $cat);
+            });
+
+            // $items->when($schoolType, function($q, $schoolType){
+            //     return $q->where("quantity", $schoolType);
+            // });
+
+            $items->get();
             
             if($items->count()){
                 return response(['data'=>$items], 200);
