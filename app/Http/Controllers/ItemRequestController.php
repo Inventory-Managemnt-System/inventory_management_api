@@ -94,11 +94,11 @@ class ItemRequestController extends Controller
         });
 
         $query->when($start_date, function($q, $start_date){
-            return $q->where("start_date", "=>", $start_date);
+            return $q->where("created_at", "=>", $start_date);
         });
 
         $query->when($end_date, function($q, $end_date){
-            return $q->where("end_date", "=<", $end_date);
+            return $q->where("created_at", "=<", $end_date);
         });
 
         $itemRequest = $query->get();
