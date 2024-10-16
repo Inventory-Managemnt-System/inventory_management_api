@@ -74,8 +74,8 @@ class ItemRequestController extends Controller
 
         $query = ItemRequest::query();
 
-        $query->when($request->school_id, function($q, $request){
-            return $q->where("school_id", $request->school_id);
+        $query->when($validated["school_id"], function($q, $validated){
+            return $q->where("school_id", $validated["school_id"]);
         });
 
         $itemRequest = $query->get();
