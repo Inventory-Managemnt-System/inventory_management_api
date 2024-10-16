@@ -217,7 +217,7 @@ class ItemController extends Controller
             $query = Item::query();
 
             $query->when($max, function($q, $max){
-                return $q->where("quantity", ">=", $max);
+                return $q->where("quantity", "<=", $max);
             });
 
             $query->when($cat, function($q, $cat){
