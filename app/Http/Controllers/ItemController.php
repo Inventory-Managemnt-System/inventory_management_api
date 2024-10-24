@@ -24,9 +24,13 @@ class ItemController extends Controller
    {
        $user = auth()->user();
        if ($user['role']['slug'] === "head-teacher"){
-           $items = NewItem::where(["school_id" => $user['school']])->paginate(50);
-           $allItems = NewItem::where(["school_id" => $user['school']])->get();
+           $items = NewItem::where(["school_id" => $user['school']])->get();
+           $allItems = $items;
            $low_stock = NewItem::where("quantity", "<", "1")->where(["school_id" => $user['school']])->get();
+       }elseif($user['role']['slug'] === "subeb-user"){
+            $items = NewItem::where(["location_id" => $user['location_id']])->get();
+            $allItems = $items;
+            $low_stock = NewItem::where("quantity", "<", "1")->where(["school_id" => $user['school']])->get();
        } else {
            $items = Item::with("category")->paginate(50);
            $allItems = Item::all();
