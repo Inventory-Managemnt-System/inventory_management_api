@@ -24,11 +24,11 @@ class ItemController extends Controller
    {
        $user = auth()->user();
        if ($user['role']['slug'] === "head-teacher"){
-           $items = NewItem::where(["school_id" => $user['school']])->get();
+           $items = NewItem::where(["school_id" => $user['school']])->paginate(5000);
            $allItems = $items;
            $low_stock = NewItem::where("quantity", "<", "1")->where(["school_id" => $user['school']])->get();
        }elseif($user['role']['slug'] === "subeb-user"){
-            $items = NewItem::where(["location_id" => $user['location_id']])->get();
+            $items = NewItem::where(["location_id" => $user['location_id']])->paginate(5000);
             $allItems = $items;
             $low_stock = NewItem::where("quantity", "<", "1")->where(["school_id" => $user['school']])->get();
        } else {
