@@ -41,7 +41,7 @@ class ItemController extends Controller
            "allItems" => count($allItems),
            "lowStock" => count($low_stock),
            "lowStockItems" => $low_stock,
-           "items" => $items->items(),  // Get the actual items from the paginator
+           "items" => $items,  // Get the actual items from the paginator
            "pagination" => [
                "total" => $items->total(),
                "per_page" => $items->perPage(),
