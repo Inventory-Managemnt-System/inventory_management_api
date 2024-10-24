@@ -52,6 +52,18 @@ class ItemController extends Controller
            ]
        ], Response::HTTP_OK);
    }
+
+   public function all(): JsonResponse
+   {
+       
+        $items = Item::all();
+           
+        return response()->json([
+           "allItems" => count($items),
+           "items" => $items,  // Get the actual items from the paginator
+           
+        ], Response::HTTP_OK);
+   }
     public function low_stock(): JsonResponse
    {
        $user = auth()->user();
@@ -245,7 +257,7 @@ class ItemController extends Controller
         }  
 
     }
-    public function find_items(Request $request): \Illuminate\Http\JsonResponse
+    public function find_items(Request $request): JsonResponse
     {
         $validated = $request->validate([
             "search" => "string|required",
