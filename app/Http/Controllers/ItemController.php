@@ -56,7 +56,7 @@ class ItemController extends Controller
    public function all(): JsonResponse
    {
        
-        $items = Item::all();
+        $items = Item::limit(5000)->get();
            
         return response()->json([
            "allItems" => count($items),
