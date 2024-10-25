@@ -36,7 +36,7 @@ class ItemRequestController extends Controller
         $user = auth()->user();
         $qarequest = QASchool::with('schools')->where("user_id", $user["id"])->get();
 
-        return response()->json($this->collection(collect($qarequest)), Response::HTTP_OK);
+        return response()->json($qarequest, Response::HTTP_OK);
     }
 
     public function show(int $id): JsonResponse
