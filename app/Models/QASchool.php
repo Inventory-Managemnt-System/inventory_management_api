@@ -21,7 +21,7 @@ class QASchool extends Model
      */
     public function schools(): HasMany
     {
-        return $this->hasMany(School::class);
+        return $this->hasMany(School::class, "school_id", "id");
     }
 
 
