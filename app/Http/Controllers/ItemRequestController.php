@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\ItemRequest;
+use App\Models\QASchool;
 use App\Models\School;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -28,6 +29,14 @@ class ItemRequestController extends Controller
 
         return response()->json(["itemRequests" => $this->collection(collect([]))], Response::HTTP_OK);
         
+    }
+
+    public function qa(): JsonResponse
+    {
+        $user = auth()->user();
+        $qarequest = QASchool::with('schools')->where("user_id", $user["id"])->get();
+        dd($qarequest);
+        return response()->json(["itemRequests" => $this->collection(collect([]))], Response::HTTP_OK);
     }
 
     public function show(int $id): JsonResponse
