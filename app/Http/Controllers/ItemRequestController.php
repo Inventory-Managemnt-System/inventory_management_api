@@ -63,7 +63,7 @@ class ItemRequestController extends Controller
     public function show(int $id): JsonResponse
     {
         $user = auth()->user();
-        $itemRequest = ItemRequest::where(["id" => $id, 'user_id' => $user['id']])->with(['school', 'item', 'user'])->first();
+        $itemRequest = ItemRequest::where(["id" => $id])->with(['school', 'item', 'user'])->first();
         if (!$itemRequest) return response()->json(["message" => "Item Request not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
         return response()->json(["itemRequest" => $this->resource($itemRequest)], Response::HTTP_OK);
     }
