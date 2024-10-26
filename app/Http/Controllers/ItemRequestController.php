@@ -37,10 +37,24 @@ class ItemRequestController extends Controller
         $user = auth()->user();
         $schools = School::with('newitems')->where('qa_id', $user["id"])->get();
         $locations = Location::with('newitems')->where('qa_id', $user["id"])->get();
+        
+        $schoolIds = [];
+        $locationIds = [];
+
+        foreach ($schools as $school) {
+            $schoolIds[] = $school->id;
+        }
+
+        foreach ($locations as $location) {
+            $locationIds[] = $location->id;
+        }
+
+        $requests = ItemRequest::whereIn('school_id', $schoolIds)->orWhereIn('location_id', $locationIds)->get();
+
         $res = [
             "schools" => $schools,
             "locations" => $locations,
-            "requests" => [],
+            "requests" => $requests,
         ];
 
         return response()->json($res, Response::HTTP_OK);
