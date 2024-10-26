@@ -39,6 +39,6 @@ class School extends Model
      */
     public function newitems(): HasMany
     {
-        return $this->hasMany(NewItem::class, 'school_id');
+        return $this->hasMany(NewItem::class, 'school_id', 'school_id');
     }
 }
