@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
-use App\Models\ItemRequest;
-use App\Models\QASchool;
 use App\Models\School;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Location;
+use App\Models\QASchool;
+use App\Models\ItemRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Illuminate\Database\Eloquent\Model;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ItemRequestController extends Controller
 {
@@ -34,9 +35,15 @@ class ItemRequestController extends Controller
     public function qa(): JsonResponse
     {
         $user = auth()->user();
-        $qarequest = QASchool::with('schools')->where("user_id", $user["id"])->get();
+        $schools = School::with('requests')->where('qa_id', $user["id"])->get();
+        $locations = Location::with('requests')->where('qa_id', $user["id"])->get();
+        $res = [
+            "schools" => $schools,
+            "locations" => $locations,
+            "requests" => [],
+        ];
 
-        return response()->json($qarequest, Response::HTTP_OK);
+        return response()->json($res, Response::HTTP_OK);
     }
 
     public function show(int $id): JsonResponse
