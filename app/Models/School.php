@@ -26,6 +26,6 @@ class School extends Model
 
     public function items($school_id)
     {
-        return NewItem::where(['school_id' => $school_id])->paginate(50);
+        return NewItem::where(['school_id' => $school_id])->get();
     }
 }
