@@ -49,7 +49,7 @@ class ItemRequestController extends Controller
             $locationIds[] = $location->id;
         }
 
-        $requests = ItemRequest::whereIn('school_id', $schoolIds)->orWhereIn('location_id', $locationIds)->get();
+        $requests = ItemRequest::with('item')->whereIn('school_id', $schoolIds)->orWhereIn('location_id', $locationIds)->get();
 
         $res = [
             "schools" => $schools,
