@@ -35,8 +35,8 @@ class ItemRequestController extends Controller
     public function qa(): JsonResponse
     {
         $user = auth()->user();
-        $schools = School::with('items')->where('qa_id', $user["id"])->get();
-        $locations = Location::with('items')->where('qa_id', $user["id"])->get();
+        $schools = School::with('newitems')->where('qa_id', $user["id"])->get();
+        $locations = Location::with('newitems')->where('qa_id', $user["id"])->get();
         $res = [
             "schools" => $schools,
             "locations" => $locations,
