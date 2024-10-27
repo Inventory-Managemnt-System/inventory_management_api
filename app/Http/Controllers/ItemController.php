@@ -25,11 +25,11 @@ class ItemController extends Controller
        $user = auth()->user();
        if ($user['role']['slug'] === "head-teacher"){
            $items = NewItem::where(["school_id" => $user['school']])->paginate(5000);
-           $allItems = $items;
+           $allItems = $items->count();
            $low_stock = NewItem::where("quantity", "<", "1")->where(["school_id" => $user['school']])->get();
        }elseif($user['role']['slug'] === "subeb-user"){
             $items = NewItem::where(["location_id" => $user['location_id']])->paginate(5000);
-            $allItems = $items;
+            $allItems = $items->count();
             $low_stock = NewItem::where("quantity", "<", "1")->where(["school_id" => $user['school']])->get();
        } else {
            $items = Item::with("category")->paginate(500);
@@ -38,7 +38,7 @@ class ItemController extends Controller
        }
 
        return response()->json([
-           "allItems" => count($allItems),
+           "allItems" => $allItems,
            "lowStock" => count($low_stock),
            "lowStockItems" => $low_stock,
            "items" => $items->items(),  // Get the actual items from the paginator
