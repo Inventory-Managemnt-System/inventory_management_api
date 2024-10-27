@@ -33,7 +33,7 @@ class ItemController extends Controller
             $low_stock = NewItem::where("quantity", "<", "1")->where(["school_id" => $user['school']])->get();
        } else {
            $items = Item::with("category")->paginate(500);
-           $allItems = Item::all();
+           $allItems = Item::count();
            $low_stock = Item::where("quantity", "<", "1")->get();
        }
 
