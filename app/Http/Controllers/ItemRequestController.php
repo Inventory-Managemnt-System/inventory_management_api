@@ -99,7 +99,7 @@ class ItemRequestController extends Controller
         ]);
 
         // find item request
-        $item = ItemRequest::where(['id' => $id, 'status' => 'approved'])->first();
+        $item = ItemRequest::where(['id' => $id, 'status' => 'pending'])->first();
         if(!$item) return response()->json(["message" => "Item request not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
 
         $item->update($itemRequest);
