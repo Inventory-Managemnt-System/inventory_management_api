@@ -89,6 +89,20 @@ class ItemRequestController extends Controller
         $itemRequest->quantity = $validated["quantity"];
         $itemRequest->comment = $validated["comment"];
         $itemRequest->save();
+        return response()->json(["itemRequest" => $itemRequest], Response::HTTP_OK);
+    }
+
+    public function statusupdate(Request $request, int $id): JsonResponse
+    {
+        $itemRequest = $this->validate($request, [
+            "status" => "required|string",
+        ]);
+
+        // find item request
+        $item = Item::where(['id' => $id, 'status' => 'approved'])->first();
+        if(!$item) return response()->json(["message" => "Item request not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
+
+        $item->update($itemRequest);
         return response()->json(["itemRequest" => $itemRequest], Response::HTTP_CREATED);
     }
 
