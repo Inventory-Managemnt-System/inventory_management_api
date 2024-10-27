@@ -32,6 +32,14 @@ class ItemRequestController extends Controller
         
     }
 
+    public function warehouse(): JsonResponse
+    {
+        
+        $itemRequests = ItemRequest::with(['school', 'item', 'user'])->whereIn('status', ["approved", "denied", "in-transit", "delivered"])->latest()->get();
+        return response()->json(["itemRequests" => $this->collection($itemRequests)], Response::HTTP_OK);
+        
+    }
+
     public function qa(): JsonResponse
     {
         $user = auth()->user();
