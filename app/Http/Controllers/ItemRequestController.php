@@ -126,7 +126,7 @@ class ItemRequestController extends Controller
         $item = ItemRequest::where(['id' => $id, 'status' => 'approved'])->first();
         if(!$item) return response()->json(["message" => "Item request not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
 
-        $item->update(["quantity_given"=>$itemRequest['quantity'], "status"=>$itemRequest['status']]);
+        $item->update(["quantity_given"=>$itemRequest['quantity_given'], "status"=>$itemRequest['status']]);
         return response()->json(["itemRequest" => $itemRequest], Response::HTTP_CREATED);
     }
 
