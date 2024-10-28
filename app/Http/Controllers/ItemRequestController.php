@@ -189,6 +189,7 @@ class ItemRequestController extends Controller
                 "id" => $model['item']['id'],
                 "name" => $model['item']['item_name'],
                 "quantity" => $model['item']['quantity'],
+                "quantity_issued" => $model['item']['quantity_given'],
                 "code" => $model['item']['item_code'],
             ],
             "school" => [
