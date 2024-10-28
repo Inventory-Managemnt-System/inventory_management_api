@@ -114,6 +114,21 @@ class ItemRequestController extends Controller
         return response()->json(["itemRequest" => $itemRequest], Response::HTTP_CREATED);
     }
 
+
+    public function warehouseupdate(Request $request, int $id): JsonResponse
+    {
+        $itemRequest = $this->validate($request, [
+            "status" => "required|string",
+        ]);
+
+        // find item request
+        $item = ItemRequest::where(['id' => $id, 'status' => 'approved'])->first();
+        if(!$item) return response()->json(["message" => "Item request not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
+
+        $item->update(["quantity_given"=>$itemRequest['quantity'], "status"=>$itemRequest['status']]);
+        return response()->json(["itemRequest" => $itemRequest], Response::HTTP_CREATED);
+    }
+
     public function search(Request $request): JsonResponse
     {
         $validated = $this->validate($request, [

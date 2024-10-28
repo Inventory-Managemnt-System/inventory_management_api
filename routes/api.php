@@ -143,6 +143,7 @@ Route::prefix("item-request")->middleware(["auth:sanctum"])->controller(ItemRequ
     Route::get("/", "index");
     Route::post("/search", "search");
     Route::patch("/status/{id}", "statusupdate");
+    Route::patch("/warehousestatus/{id}", "warehouseupdate");
     Route::get("/qa", "qa");
     Route::get("/warehouse", "warehouse");
     Route::get("{id}", "show");
