@@ -118,6 +118,7 @@ class ItemRequestController extends Controller
     public function warehouseupdate(Request $request, int $id): JsonResponse
     {
         $itemRequest = $this->validate($request, [
+            "quantity" => "required|numeric",
             "status" => "required|string",
         ]);
 
