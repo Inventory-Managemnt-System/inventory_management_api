@@ -15,6 +15,7 @@ class ItemRequest extends Model
         "item_id",
         "user_id",
         "quantity",
+        "quantity_given",
         "comment",
         "status"
     ];
