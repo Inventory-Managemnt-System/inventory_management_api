@@ -8,6 +8,7 @@ use App\Models\AllSchools;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Whoops\Handler\JsonResponseHandler;
 
 class SchoolController extends Controller
 {
@@ -179,6 +180,24 @@ class SchoolController extends Controller
 
         $qa = User::with("schoolqa")->where('role_id', 1)->get();
         
+        return response()->json($qa, 200);
+    }
+
+    public function qadetails(int $id, ): JsonResponse
+    {
+
+        $qa = User::with("schoolqa")->where('qa_id', $id)->get();
+
+        if (!$qa) return response()->json(["message" => "Quality Assurance Officer not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
+        
+        return response()->json($qa, 200);
+    }
+
+
+    public function qaupdate(): JsonResponse
+    {
+        
+        $qa = [];
         return response()->json($qa, 200);
     }
 }
