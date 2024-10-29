@@ -82,8 +82,8 @@ Route::prefix("school")->middleware(['auth:sanctum'])->controller(SchoolControll
     Route::post("lga", "lga");
     Route::post("level", "level");
     Route::get("qa", "schoolqa");
-    Route::get("qa/(id)", "qadetails");
-    Route::patch("qa/(id)", "qaupdate");
+    Route::get("qa/{id}", "qadetails");
+    Route::patch("qa/{id}", "qaupdate");
     Route::get("/", "index");
     Route::get("{id}", "show");
     Route::post("/", "store");
