@@ -67,7 +67,7 @@ class SchoolController extends Controller
         $school = School::with("newitems")->where(["id" => $id])->firstOrFail();
         if (!$school) return response()->json(["message" => "School not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
         // get school items
-        $items = $school->items;
+        $items = $school->newitems;
         return response()->json([
             "message" => "Fetched school",
             "school" => $school,
