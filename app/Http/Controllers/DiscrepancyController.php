@@ -33,7 +33,7 @@ class DiscrepancyController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validated = $this->validate($request, [
-            "report_id" => 'string|required',
+            "report_id" => 'required',
             "reporter" => 'string|required',
             "item_name" => 'string|required',
             "supplier" => 'string|required',
