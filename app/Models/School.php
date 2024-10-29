@@ -26,9 +26,10 @@ class School extends Model
         "postal_code"
     ];
 
-    public function items($school_id)
+    public function items()
     {
-        return NewItem::where(['school_id' => $school_id])->get();
+        // return NewItem::where(['school_id' => $school_id])->get();
+        return $this->hasMany(Item::class, 'school_id', 'school_id');
     }
 
 

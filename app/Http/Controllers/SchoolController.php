@@ -64,10 +64,10 @@ class SchoolController extends Controller
 
     public function show(int $id): JsonResponse
     {
-        $school = School::where(["id" => $id])->firstOrFail();
+        $school = School::with("items")->where(["id" => $id])->firstOrFail();
         if (!$school) return response()->json(["message" => "School not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
         // get school items
-        $items = $school->items($school->school_id);
+        $items = $school->items;
         return response()->json([
             "message" => "Fetched school",
             "school" => $school,
