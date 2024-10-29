@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AllSchools;
+use App\Models\User;
 use App\Models\School;
-use Illuminate\Http\JsonResponse;
+use App\Models\AllSchools;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class SchoolController extends Controller
@@ -132,7 +133,7 @@ class SchoolController extends Controller
         return response()->json(["message" => "School deleted!"], Response::HTTP_OK);
     }
 
-    public function find_schools(Request $request): \Illuminate\Http\JsonResponse
+    public function find_schools(Request $request): JsonResponse
     {
         $validated = $request->validate([
             "search" => "string|required",
@@ -146,7 +147,7 @@ class SchoolController extends Controller
     }
 
 
-    public function lga(Request $request): \Illuminate\Http\JsonResponse
+    public function lga(Request $request): JsonResponse
     {
         $validated = $request->validate([
             "lga" => "string|required",
@@ -159,7 +160,7 @@ class SchoolController extends Controller
         return response()->json(["count" => count($schools), "schools" => $schools], 200);
     }
 
-    public function level(Request $request): \Illuminate\Http\JsonResponse
+    public function level(Request $request): JsonResponse
     {
         $validated = $request->validate([
             "level" => "string|required",
@@ -170,5 +171,14 @@ class SchoolController extends Controller
         $schools = School::where('level', $searchParam)->get();
         
         return response()->json(["count" => count($schools), "schools" => $schools], 200);
+    }
+
+
+    public function schoolqa(Request $request): JsonResponse
+    {
+
+        $qa = User::with("schoolqa")->where('role_id', 1)->get();
+        
+        return response()->json($qa, 200);
     }
 }
