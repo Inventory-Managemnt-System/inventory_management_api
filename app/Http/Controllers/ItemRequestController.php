@@ -154,7 +154,7 @@ class ItemRequestController extends Controller
         });
 
         $query->when($location_id, function($q, $location_id){
-            return $q->where("location_id", $location_id);
+            return $q->orWhere("location_id", $location_id);
         });
 
         $query->when($status, function($q, $status){
