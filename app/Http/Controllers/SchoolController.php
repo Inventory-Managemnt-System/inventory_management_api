@@ -174,7 +174,7 @@ class SchoolController extends Controller
     }
 
 
-    public function schoolqa(Request $request): JsonResponse
+    public function schoolqa(): JsonResponse
     {
 
         $qa = User::with("schoolqa")->where('role_id', 1)->get();
