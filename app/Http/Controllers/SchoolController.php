@@ -186,7 +186,7 @@ class SchoolController extends Controller
     public function qadetails(int $id, ): JsonResponse
     {
 
-        $qa = User::with("schoolqa")->where('id', $id)->get();
+        $qa = User::with("schoolqa")->where('id', $id)->first();
 
         if (!$qa) return response()->json(["message" => "Quality Assurance Officer not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
         
