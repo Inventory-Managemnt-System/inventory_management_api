@@ -70,6 +70,6 @@ class User extends Authenticatable
      */
     public function schoolqa(): HasMany
     {
-        return $this->hasMany(School::class);
+        return $this->hasMany(School::class, "qa_id");
     }
 }
