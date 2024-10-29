@@ -71,16 +71,8 @@ class SchoolController extends Controller
         return response()->json([
             "message" => "Fetched school",
             "school" => $school,
-            "items" => $items->items(),
-            "count" => $items->total(),
-            "pagination" => [
-                "total" => $items->total(),
-                "per_page" => $items->perPage(),
-                "current_page" => $items->currentPage(),
-                "last_page" => $items->lastPage(),
-                "next_page_url" => $items->nextPageUrl(),
-                "prev_page_url" => $items->previousPageUrl(),
-            ]
+            "items" => $items,
+           
         ], Response::HTTP_OK);
     }
 
