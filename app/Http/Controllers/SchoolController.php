@@ -82,14 +82,14 @@ class SchoolController extends Controller
         $validated = $request->validate([
             "name" => "required|string",
             "website" => "nullable|string|url",
-            "email" => "required|string|email",
-            "phone_number" => "required|string",
+            "email" => "nullable|string|email",
+            "phone_number" => "nullable|string",
             "level" => "required|string",
             "logo" => "nullable|string",
             "address" => "required|string",
             "city" => "required|string",
             "lga" => "required|string",
-            "postal_code" => "required|string",
+            "postal_code" => "nullable|string",
         ]);
 
         // create school record
@@ -102,14 +102,14 @@ class SchoolController extends Controller
         $validated = $request->validate([
             "name" => "required|string",
             "website" => "nullable|string|url",
-            "email" => "required|string|email",
-            "phone_number" => "required|string",
+            "email" => "nullable|string|email",
+            "phone_number" => "nullable|string",
             "level" => "required|string",
             "logo" => "nullable|string",
             "address" => "required|string",
             "city" => "required|string",
             "lga" => "required|string",
-            "postal_code" => "required|string",
+            "postal_code" => "nullable|string",
         ]);
 
         $school = School::where(["id" => $id])->firstOrFail();
