@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\School;
+use App\Models\Location;
 use App\Models\AllSchools;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Whoops\Handler\JsonResponseHandler;
+use Symfony\Component\HttpFoundation\Response;
 
 class SchoolController extends Controller
 {
@@ -186,10 +187,30 @@ class SchoolController extends Controller
     }
 
 
-    public function qaupdate(): JsonResponse
+    public function qaupdate(Request $request): JsonResponse
     {
+        $validated = $request->validate([
+            "school_id" => "integer|nullable",
+            "location_id" => "integer|nullable",
+            "user_id" => "required",
+        ]);
+
+        $qa = User::where('role_id', 1)->where('id', $validated['user_id'])->first();
+        if (!$qa) return response()->json(["message" => "Quality Assurance Officer not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
+
+        if($validated['school_id']){
+            $school = School::first($validated['school_id']);
+            if (!$school) return response()->json(["message" => "School not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
+            $school->update(["qa_id"=>$qa->id]);
+        }
+
+        if($validated['location_id']){
+            $location = Location::first($validated['location_id']);
+            if (!$location) return response()->json(["message" => "Location not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
+            $location->update(["qa_id"=>$qa->id]);
+        }
+
         
-        $qa = [];
-        return response()->json($qa, 200);
+        return response()->json($qa->refresh(), 200);
     }
 }
