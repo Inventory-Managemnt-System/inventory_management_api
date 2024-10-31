@@ -193,24 +193,28 @@ class SchoolController extends Controller
             "school_id" => "integer|nullable",
             "location_id" => "integer|nullable",
             "user_id" => "required",
+            "assign" => "integer|required",
         ]);
 
         $qa = User::where('role_id', 1)->where('id', $validated['user_id'])->first();
         if (!$qa) return response()->json(["message" => "Quality Assurance Officer not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
-
+        
+        $qa_id = ($validated["assign"]) ? $qa->id : null;
+        
         if($validated['school_id']){
             $school = School::where("id", $validated['school_id'])->first();
             if (!$school) return response()->json(["message" => "School not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
-            $school->update(["qa_id"=>$qa->id]);
+            $school->update(["qa_id"=>$qa_id]);
         }
 
         if($validated['location_id']){
             $location = Location::where("id", $validated['location_id'])->first();
             if (!$location) return response()->json(["message" => "Location not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
-            $location->update(["qa_id"=>$qa->id]);
+            $location->update(["qa_id"=>$qa_id]);
         }
 
         
         return response()->json($qa->refresh(), 200);
     }
+
 }
