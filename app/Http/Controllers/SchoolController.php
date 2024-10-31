@@ -81,6 +81,7 @@ class SchoolController extends Controller
     {
         $validated = $request->validate([
             "name" => "required|string",
+            "school_id" => "required|string",
             "website" => "nullable|string|url",
             "email" => "nullable|string|email",
             "phone_number" => "nullable|string",
@@ -101,6 +102,7 @@ class SchoolController extends Controller
     {
         $validated = $request->validate([
             "name" => "required|string",
+            "school_id" => "required|string",
             "website" => "nullable|string|url",
             "email" => "nullable|string|email",
             "phone_number" => "nullable|string",
