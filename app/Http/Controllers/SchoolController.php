@@ -199,13 +199,13 @@ class SchoolController extends Controller
         if (!$qa) return response()->json(["message" => "Quality Assurance Officer not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
 
         if($validated['school_id']){
-            $school = School::first($validated['school_id']);
+            $school = School::where("id", $validated['school_id'])->first();
             if (!$school) return response()->json(["message" => "School not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
             $school->update(["qa_id"=>$qa->id]);
         }
 
         if($validated['location_id']){
-            $location = Location::first($validated['location_id']);
+            $location = Location::where("id", $validated['location_id'])->first();
             if (!$location) return response()->json(["message" => "Location not found"], Response::HTTP_UNPROCESSABLE_ENTITY);
             $location->update(["qa_id"=>$qa->id]);
         }
