@@ -220,12 +220,12 @@ class ItemController extends Controller
         try {
 
             $user = auth()->user();
-            if ($user['role']['slug'] === "head-teacher"){
+            // if ($user['role']['slug'] === "head-teacher"){
 
-            }
-            else{
+            // }
+            // else{
                 
-            }
+            // }
             $max = $request->max;
             $cat = $request->cat;
             $schoolType = $request->schoolType;
