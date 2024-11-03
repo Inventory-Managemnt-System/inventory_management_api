@@ -247,10 +247,10 @@ class ItemController extends Controller
             $items = $query->limit(5000)->get();
             
             if($items->count()){
-                return response(['data'=>$items], 200);
+                return response($items, 200);
             }
             else{
-                return response(['message'=>'No records found'], 200);  
+                return response(['data'=>[], 'message'=>'No records found'], 200);  
             }
         } catch (Exception $th) {
             return $th;
