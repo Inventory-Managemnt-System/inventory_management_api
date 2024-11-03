@@ -203,6 +203,7 @@ class ItemRequestController extends Controller
             "comment" => $model['comment'],
             "quantity" => $model['quantity'],
             "status" => $model['status'],
+            "created_at" => $model['created_at'],
         ];
     }
 }
