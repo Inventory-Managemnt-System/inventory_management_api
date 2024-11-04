@@ -12,7 +12,17 @@ class DiscrepancyController extends Controller
     
     public function index(): JsonResponse
     {
-        $discrepancies = Discrepancy::where('status', 'review')->get();
+        $user = auth()->user();
+        if ($user['role']['slug'] === "head-teacher"){
+            $discrepancies = Discrepancy::where(['school_id' => $user['school']])->latest()->get();
+            return response()->json(["discrepancies" => $discrepancies], Response::HTTP_OK);
+        }
+
+        if($user['role']['slug'] === "subeb-user"){
+            $discrepancies = Discrepancy::where(['location_id' => $user['location_id']])->latest()->get();
+            return response()->json(["discrepancies" => $discrepancies], Response::HTTP_OK);
+        }
+        $discrepancies = Discrepancy::where('status', 'review')->latest()->get();
         return response()->json(["discrepancies" => $discrepancies], Response::HTTP_OK);
     }
 
@@ -46,6 +56,16 @@ class DiscrepancyController extends Controller
 
         $reportID = Discrepancy::where("report_id", $validated["report_id"])->first();
         if($reportID)  return response()->json(["message" => "Report ID already exists, please change"], Response::HTTP_NOT_FOUND);
+        
+        $user = auth()->user();
+        if ($user['role']['slug'] === "head-teacher"){
+            $validated['school_id'] = $user['school'];
+        }
+
+        if ($user['role']['slug'] === "head-teacher"){
+            $validated['location_id'] = $user['location_id'];
+        }
+        
         $discrepancy = new Discrepancy();
         $discrepancy->fill($validated);
         $discrepancy->save();

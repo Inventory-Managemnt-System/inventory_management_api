@@ -11,6 +11,8 @@ class Discrepancy extends Model
 
     protected $fillable = [
         "report_id",
+        "location_id",
+        "school_id",
         "reporter",
         "item_name",
         "supplier",
