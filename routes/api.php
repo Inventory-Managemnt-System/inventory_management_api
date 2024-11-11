@@ -30,7 +30,7 @@ use App\Http\Controllers\UserSettingsController;
 */
 
 Route::get("/", function(){
-    return ['welcome, we good'];
+    return response()->json(['welcome, we good']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
